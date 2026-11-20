@@ -4,13 +4,16 @@ import { AlertTriangle, ChevronRight } from "lucide-react";
 import { PNL_PERIOD } from "@/data/mockGroup";
 import type { EntityId } from "@/data/names";
 import { exceptions, groupTotals, summaries } from "@/lib/aggregate";
-import { aed, compact, pct } from "@/lib/format";
+import { aed, amount, compact, pct } from "@/lib/format";
+import { captureBySource, groupCapture } from "@/lib/movements";
 import { SourceBadge } from "../SourceBadge";
 import { Sparkline } from "../Sparkline";
 
 const totals = groupTotals();
 const tiles = summaries();
 const allExceptions = exceptions();
+const capture = groupCapture();
+const sources = captureBySource().length;
 
 export function GroupView({ onOpenEntity }: { onOpenEntity: (id: EntityId) => void }) {
   const kpis = [
@@ -23,6 +26,22 @@ export function GroupView({ onOpenEntity }: { onOpenEntity: (id: EntityId) => vo
   return (
     <div className="h-full overflow-y-auto overscroll-contain px-4 pb-5 pt-1 @min-[54rem]:px-5">
       <ViewHeader title="Group overview" subtitle={`All ${tiles.length} companies · AED`} />
+
+      <div className="mb-2.5 flex flex-wrap items-center gap-x-4 gap-y-1 rounded-[12px] border border-hairline bg-white/70 px-3 py-2 text-[10.5px] text-ink-muted">
+        <span className="font-semibold text-ink">Pipeline</span>
+        <span>
+          <span className="num text-ink">{sources}</span> sources · <span className="num text-ink">{tiles.length}</span> companies
+        </span>
+        <span>
+          <span className="num text-ink">{amount(capture.total)}</span> movements captured YTD
+        </span>
+        <span className="hidden @min-[54rem]:inline">
+          <span className="num text-ink">{amount(capture.salesInvoices)}</span> invoices · <span className="num text-ink">{amount(capture.receipts)}</span> receipts
+        </span>
+        <span className="ml-auto flex items-center gap-1 text-emerald-ink">
+          <span className="size-1.5 rounded-full bg-emerald" aria-hidden /> All sources read
+        </span>
+      </div>
 
       {/* KPI strip */}
       <div className="grid grid-cols-2 gap-2 @min-[54rem]:grid-cols-4 @min-[54rem]:gap-2.5">
@@ -47,7 +66,7 @@ export function GroupView({ onOpenEntity }: { onOpenEntity: (id: EntityId) => vo
       {/* Entity tiles */}
       <div className="mb-2 mt-4 flex items-baseline justify-between">
         <h3 className="text-[12px] font-semibold tracking-[-0.01em]">Companies</h3>
-        <p className="text-[10.5px] text-ink-faint">Tap a company for P&amp;L and cash</p>
+        <p className="text-[10.5px] text-ink-faint">Tap a company for P&amp;L, cash and movements</p>
       </div>
       <ul className="grid grid-cols-2 gap-2 @min-[54rem]:grid-cols-5 @min-[54rem]:gap-2.5">
         {tiles.map((t) => (

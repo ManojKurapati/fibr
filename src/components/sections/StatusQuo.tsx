@@ -122,7 +122,7 @@ export function StatusQuo() {
               <em className="italic">Ten versions of the truth.</em>
             </>
           }
-          lede="Most UAE holding groups run each company on its own books. Seeing the group means waiting for someone to stitch it together."
+          lede="Money moves through every company, every day. In most UAE holding groups, nobody can see all of it until someone stitches it together by hand."
         />
 
         <div className="mt-14 grid gap-3 lg:mt-20 lg:grid-cols-12 lg:gap-4">

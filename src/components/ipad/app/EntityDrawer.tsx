@@ -8,6 +8,8 @@ import type { EntityId } from "@/data/names";
 import { exceptions, getEntity, summarise } from "@/lib/aggregate";
 import { amount, compact, dateShort, pct } from "@/lib/format";
 import { SourceBadge } from "../SourceBadge";
+import { captureCounts, latestMovements, overdueInvoices } from "@/lib/movements";
+import { MovementList } from "./MovementList";
 import { AnswerBars } from "./charts";
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -21,7 +23,7 @@ export function EntityDrawer({ entityId, onClose }: { entityId: EntityId | null;
 }
 
 function DrawerPanel({ entityId, onClose }: { entityId: EntityId; onClose: () => void }) {
-  const [tab, setTab] = useState<"pnl" | "cash">("pnl");
+  const [tab, setTab] = useState<"pnl" | "cash" | "movements">("pnl");
   const closeRef = useRef<HTMLButtonElement>(null);
   const titleId = useId();
   const e = getEntity(entityId);
@@ -85,8 +87,8 @@ function DrawerPanel({ entityId, onClose }: { entityId: EntityId; onClose: () =>
             <SourceBadge sources={e.ledgers} />
           </div>
           {/* Segmented control */}
-          <div role="tablist" aria-label="Company view" className="mt-3 grid grid-cols-2 rounded-[10px] bg-[#ecebe6] p-0.5">
-            {(["pnl", "cash"] as const).map((t) => (
+          <div role="tablist" aria-label="Company view" className="mt-3 grid grid-cols-3 rounded-[10px] bg-[#ecebe6] p-0.5">
+            {(["pnl", "cash", "movements"] as const).map((t) => (
               <button
                 key={t}
                 type="button"
@@ -98,7 +100,7 @@ function DrawerPanel({ entityId, onClose }: { entityId: EntityId; onClose: () =>
                 {tab === t ? (
                   <motion.span layoutId={`seg-${titleId}`} className="absolute inset-0 rounded-[8px] bg-white shadow-[0_1px_2px_rgba(11,18,33,0.12)]" transition={{ duration: 0.22, ease }} />
                 ) : null}
-                <span className={`relative ${tab === t ? "text-ink" : "text-ink-muted"}`}>{t === "pnl" ? "P&L" : "Cash & working capital"}</span>
+                <span className={`relative ${tab === t ? "text-ink" : "text-ink-muted"}`}>{t === "pnl" ? "P&L" : t === "cash" ? "Cash" : "Movements"}</span>
               </button>
             ))}
           </div>
@@ -108,12 +110,12 @@ function DrawerPanel({ entityId, onClose }: { entityId: EntityId; onClose: () =>
           <AnimatePresence mode="wait" initial={false}>
             <motion.div
               key={tab}
-              initial={{ opacity: 0, x: tab === "pnl" ? -8 : 8 }}
+              initial={{ opacity: 0, x: 8 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.18, ease }}
             >
-              {tab === "pnl" ? <PnlPanel id={entityId} /> : <CashPanel id={entityId} />}
+              {tab === "pnl" ? <PnlPanel id={entityId} /> : tab === "cash" ? <CashPanel id={entityId} /> : <MovementsPanel id={entityId} />}
             </motion.div>
           </AnimatePresence>
         </div>
@@ -286,6 +288,48 @@ function CashPanel({ id }: { id: EntityId }) {
           ))}
         </div>
       ) : null}
+    </div>
+  );
+}
+
+function MovementsPanel({ id }: { id: EntityId }) {
+  const e = getEntity(id);
+  const c = captureCounts(e);
+  const overdue = e.receivables.over90.flatMap((d, i) => overdueInvoices(id, d, i));
+  const counts = [
+    { label: "Sales invoices", v: c.salesInvoices },
+    { label: "Receipts", v: c.receipts },
+    { label: "Purchase invoices", v: c.purchaseInvoices },
+    { label: "Payments", v: c.payments },
+    ...(c.webOrders ? [{ label: "Web orders", v: c.webOrders }] : []),
+  ];
+  return (
+    <div className="space-y-4">
+      <div className="rounded-[12px] border border-hairline bg-white p-3">
+        <div className="flex items-baseline justify-between">
+          <p className="text-[10.5px] font-medium text-ink-muted">Movements captured · {PNL_PERIOD}</p>
+          <p className="num text-[15px] font-semibold tracking-[-0.02em]">{amount(c.total)}</p>
+        </div>
+        <div className="mt-2 grid grid-cols-2 gap-x-4">
+          {counts.map((k) => (
+            <p key={k.label} className="flex items-baseline justify-between border-t border-hairline py-1 text-[10.5px]">
+              <span className="text-ink-muted">{k.label}</span>
+              <span className="num">{amount(k.v)}</span>
+            </p>
+          ))}
+        </div>
+      </div>
+      <div>
+        <p className="mb-1 text-[11px] font-semibold">Latest movements</p>
+        <MovementList items={latestMovements(id)} />
+      </div>
+      <div>
+        <p className="mb-1 flex items-baseline justify-between text-[11px] font-semibold">
+          Invoices over 90 days
+          <span className="num text-[10.5px] font-normal text-amber-ink">{amount(overdue.reduce((a, m) => a + m.amount, 0))}</span>
+        </p>
+        <MovementList items={overdue} overdue />
+      </div>
     </div>
   );
 }

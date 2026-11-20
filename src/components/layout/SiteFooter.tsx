@@ -10,12 +10,13 @@ export function SiteFooter() {
           <div className="md:col-span-5">
             <Wordmark tone="inverse" className="text-[2.25rem]" />
             <p className="mt-4 max-w-[24rem] text-[0.9375rem] leading-relaxed">
-              Every company. One screen. One live view of every company in the group, on the owner&apos;s iPad, at any hour.
+              Financial visibility for UAE holding groups. Every transaction, invoice and receipt, captured from every source, in one view of the group.
             </p>
           </div>
           <div className="text-[0.875rem] md:col-span-3">
             <p className="eyebrow text-ink-inverse">Product</p>
             <ul className="mt-4 space-y-2.5">
+              <li><a className="hover:text-ink-inverse" href="#pipeline">The pipeline</a></li>
               <li><a className="hover:text-ink-inverse" href="#tour">Six moments</a></li>
               <li><a className="hover:text-ink-inverse" href="#security">Security</a></li>
               <li><a className="hover:text-ink-inverse" href="#pilot">4-week pilot</a></li>

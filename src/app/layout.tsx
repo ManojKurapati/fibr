@@ -24,13 +24,13 @@ const mono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://fibr.example"),
-  title: "fibr — Every company. One screen.",
+  title: "fibr: see every dirham move",
   description:
-    "One live view of every company in the group, on the owner's iPad, at any hour. No new accounting system. No re-keying. Live in 4 weeks.",
+    "Financial visibility for UAE holding groups. fibr pipes every transaction, invoice and receipt from every company's books into one view of the group. Read-only. Live in 4 weeks.",
   openGraph: {
-    title: "fibr — Every company. One screen.",
+    title: "fibr: see every dirham move",
     description:
-      "One live view of every company in the group, on the owner's iPad. Read-only by design. Live in 4 weeks.",
+      "Every source captured. Every number traceable to its invoice or receipt. Read-only by design. Live in 4 weeks.",
     type: "website",
   },
 };

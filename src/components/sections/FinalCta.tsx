@@ -3,8 +3,8 @@ import { Eyebrow } from "../ui/Eyebrow";
 import { BookingForm } from "./BookingForm";
 
 const PROMISES = [
-  { k: "One view", v: "Every company, on the owner's iPad." },
-  { k: "Nothing changes", v: "Read-only. Your ledgers and teams stay as they are." },
+  { k: "One view", v: "Every company and every movement, in one place." },
+  { k: "Nothing changes", v: "Read-only. Your sources and teams stay as they are." },
   { k: "Four weeks", v: "From scope to live, starting with 2–3 companies." },
 ];
 

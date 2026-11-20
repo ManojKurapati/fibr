@@ -83,7 +83,7 @@ const PILLARS = [
   {
     Icon: Lock,
     title: "Read-only by design",
-    body: "fibr reads Tally, Business Central, QuickBooks Online, Zoho Books and Shopify. It never writes, posts or changes a single entry.",
+    body: "fibr captures from Tally, Business Central, QuickBooks Online, Zoho Books and Shopify. It never writes, posts or changes a single entry.",
     Proof: ReadOnlyProof,
   },
   {
@@ -95,7 +95,7 @@ const PILLARS = [
   {
     Icon: Scale,
     title: "Reconciled to your signed accounts",
-    body: "Before you rely on a number, every company is tied back to its last signed accounts. Zero migration, zero re-keying.",
+    body: "Before you rely on a number, every company's captured movements are tied back to its last signed accounts. Zero migration, zero re-keying.",
     Proof: ReconcileProof,
   },
 ];

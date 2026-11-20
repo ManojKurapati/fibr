@@ -8,7 +8,7 @@ import { Avatar, GroupSwitcher, StatusBar } from "./AppChrome";
 import { AskFibr } from "./app/AskFibr";
 import { EntityDrawer } from "./app/EntityDrawer";
 import { GroupView } from "./app/GroupView";
-import { BriefScreen } from "./app/tour/BriefScreen";
+import { TraceScreen } from "./app/tour/TraceScreen";
 import { ExceptionsScreen } from "./app/tour/ExceptionsScreen";
 import { StatementsScreen } from "./app/tour/StatementsScreen";
 import { SummaryScreen } from "./app/tour/SummaryScreen";
@@ -20,17 +20,11 @@ export function TourApp({ moment, label }: { moment: TourMomentId; label: string
   const [entityId, setEntityId] = useState<EntityId | null>(null);
   return (
     <div role="region" aria-label={label} className="relative flex h-[640px] flex-col overflow-hidden bg-app text-ink @min-[54rem]:aspect-[1194/834] @min-[54rem]:h-auto">
-      {moment !== "ipad" ? (
-        <>
-          <StatusBar />
-          <div className="flex h-12 shrink-0 items-center justify-between px-4 @min-[54rem]:h-[52px] @min-[54rem]:px-5">
-            <GroupSwitcher />
-            <Avatar />
-          </div>
-        </>
-      ) : (
-        <StatusBar />
-      )}
+      <StatusBar />
+      <div className="flex h-12 shrink-0 items-center justify-between px-4 @min-[54rem]:h-[52px] @min-[54rem]:px-5">
+        <GroupSwitcher />
+        <Avatar />
+      </div>
       <div className="relative min-h-0 flex-1">
         <AnimatePresence mode="wait" initial={false}>
           <motion.div
@@ -46,7 +40,7 @@ export function TourApp({ moment, label }: { moment: TourMomentId; label: string
             {moment === "statements" ? <StatementsScreen /> : null}
             {moment === "exceptions" ? <ExceptionsScreen /> : null}
             {moment === "ask" ? <AskFibr /> : null}
-            {moment === "ipad" ? <BriefScreen /> : null}
+            {moment === "trace" ? <TraceScreen /> : null}
           </motion.div>
         </AnimatePresence>
         <EntityDrawer entityId={entityId} onClose={() => setEntityId(null)} />

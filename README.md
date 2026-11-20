@@ -1,6 +1,6 @@
 # fibr: marketing site
 
-Every company. One screen. The marketing site for **fibr**, built to the rules in [`CLAUDE.md`](CLAUDE.md) and the blueprint in [`PLAN.md`](PLAN.md).
+See every dirham move. The marketing site for **fibr** (financial visibility for UAE holding groups), built to the rules in [`CLAUDE.md`](CLAUDE.md) and the blueprint in [`PLAN.md`](PLAN.md).
 
 ## Run
 
@@ -25,7 +25,8 @@ BASE_URL=http://localhost:3000 npm run screens   # writes ./screenshots (git-ign
 - `src/data/names.ts`: group and company display names (placeholders; swap here only)
 - `src/data/mockGroup.ts`: illustrative group data in AED. Every total is derived in `src/lib/aggregate.ts` and checked by `tests/aggregate.test.ts`
 - `src/data/content.ts`: all section copy (no prices, stats or testimonials)
-- `src/components/ipad/`: the iPad Pro frame and the fibr app demo
+- `src/lib/movements.ts`: the movements pipeline (capture counts per source, latest movements, overdue invoices that sum to each debtor)
+- `src/components/ipad/`: the tablet frame and the fibr app demo (the stage, not the pitch)
 - `src/app/api/ask`: live "Ask fibr" free-text answers (Claude). Needs `ANTHROPIC_API_KEY`; without it the demo falls back to the preset questions
 - `src/app/api/walkthrough`: booking stub (validates and logs a redacted summary; TODO: forward to email/CRM)
 

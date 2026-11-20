@@ -64,7 +64,7 @@ export function BookingForm() {
         <CheckCircle2 className="size-10 text-emerald" aria-hidden />
         <p className="mt-6 font-display text-[2.25rem] leading-[1.05] tracking-[-0.025em]">Thank you. Your walkthrough request is in.</p>
         <p className="mt-3 max-w-[28rem] text-[1rem] leading-relaxed text-ink-muted">
-          We&apos;ll confirm your 45-minute iPad walkthrough by email.
+          We&apos;ll confirm your 45-minute walkthrough by email.
         </p>
       </motion.div>
     );
@@ -171,7 +171,7 @@ export function BookingForm() {
         {status === "failed" ? (
           <span className="text-amber-ink">Something went wrong sending your request. Please try again.</span>
         ) : (
-          "45 minutes, on an iPad, with your questions. No preparation needed."
+          "45 minutes, on your group's real questions. No preparation needed."
         )}
       </p>
     </form>

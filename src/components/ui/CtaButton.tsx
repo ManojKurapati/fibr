@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import type { ReactNode } from "react";
 
-export const PRIMARY_CTA = "Book a 45-Minute iPad Walkthrough";
+export const PRIMARY_CTA = "Book a 45-Minute Walkthrough";
 
 type Variant = "primary" | "ghost" | "inverse" | "ghost-inverse";
 

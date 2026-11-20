@@ -22,7 +22,7 @@ const FACTS = [
     unit: "AED",
     title: "Audited statements above AED 50m",
     body: "Companies with revenue above AED 50m need audited financial statements.",
-    inFibr: `${auditCount} of ${ENTITIES.length} companies in the demo group flagged automatically from last year's revenue.`,
+    inFibr: `${auditCount} of ${ENTITIES.length} demo companies flagged from last year's revenue, with every figure traceable to its invoices for the auditor.`,
   },
   {
     figure: "QFZP",

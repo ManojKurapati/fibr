@@ -3,6 +3,7 @@ import { SiteHeader } from "@/components/layout/SiteHeader";
 import { CommercialFaq } from "@/components/sections/CommercialFaq";
 import { FinalCta } from "@/components/sections/FinalCta";
 import { Hero } from "@/components/sections/Hero";
+import { Pipeline } from "@/components/sections/Pipeline";
 import { PilotTimeline } from "@/components/sections/PilotTimeline";
 import { ProductTour } from "@/components/sections/ProductTour";
 import { RoleSwitcher } from "@/components/sections/RoleSwitcher";
@@ -17,6 +18,7 @@ export default function Home() {
       <main>
         <Hero />
         <StatusQuo />
+        <Pipeline />
         <ProductTour />
         <RoleSwitcher />
         <WhyNowUAE />

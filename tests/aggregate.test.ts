@@ -54,3 +54,17 @@ test("consolidation: sectors + eliminations = group; eliminations have no profit
   assert.equal(c.eliminations.netProfit, 0);
   assert.equal(c.group.netProfit, g.netProfit);
 });
+
+import { captureCounts, groupCapture, overdueInvoices, latestMovements } from "../src/lib/movements";
+test("pipeline: overdue invoices sum to each debtor balance; capture counts add up", () => {
+  for (const e of ENTITIES) {
+    e.receivables.over90.forEach((d, i) => {
+      const inv = overdueInvoices(e.id, d, i);
+      assert.equal(inv.reduce((a, x) => a + x.amount, 0), d.amount, `${e.id} ${d.name}`);
+      assert.ok(inv.every((x) => x.amount > 0 && (x.daysOutstanding ?? 0) >= 90));
+    });
+    assert.ok(latestMovements(e.id).length >= 7);
+  }
+  const g = groupCapture();
+  assert.equal(g.total, ENTITIES.reduce((a, e) => a + captureCounts(e).total, 0));
+});

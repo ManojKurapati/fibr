@@ -52,9 +52,12 @@ for (const vp of VIEWPORTS) {
   await app.getByRole("button", { name: /Manufacturing Co\. B: cash/ }).click();
   await pause(600);
   await app.screenshot({ path: `${OUT}/${vp.name}-03-ipad-drawer-pnl.png` });
-  await app.getByRole("tab", { name: /Cash & working capital/ }).click();
+  await app.getByRole("tab", { name: /^Cash$/ }).click();
   await pause(500);
   await app.screenshot({ path: `${OUT}/${vp.name}-04-ipad-drawer-cash.png` });
+  await app.getByRole("tab", { name: /^Movements$/ }).click();
+  await pause(500);
+  await app.screenshot({ path: `${OUT}/${vp.name}-04b-ipad-drawer-movements.png` });
   await app.getByRole("button", { name: "Close", exact: true }).click();
   await pause(500);
 
@@ -100,7 +103,7 @@ for (const vp of VIEWPORTS) {
   }
 
   // ---- Sections ----
-  for (const id of ["problem", "uae", "security", "pilot", "faq"]) {
+  for (const id of ["problem", "pipeline", "uae", "security", "pilot", "faq"]) {
     await page.locator(`#${id}`).scrollIntoViewIfNeeded();
     await pause(300);
     await page.locator(id === "faq" ? "#faq >> xpath=ancestor::section" : `#${id}`).screenshot({ path: `${OUT}/${vp.name}-12-${id}.png` });
@@ -109,7 +112,7 @@ for (const vp of VIEWPORTS) {
   // ---- Booking form: errors, then success ----
   const book = page.locator("#book");
   await book.scrollIntoViewIfNeeded();
-  await book.getByRole("button", { name: /Book a 45-Minute iPad Walkthrough/ }).click();
+  await book.getByRole("button", { name: /Book a 45-Minute Walkthrough/ }).click();
   await pause(400);
   await book.screenshot({ path: `${OUT}/${vp.name}-13-form-errors.png` });
   await book.getByLabel("Full name").fill("Test Owner");
@@ -119,7 +122,7 @@ for (const vp of VIEWPORTS) {
   await book.getByLabel("Companies in the group").selectOption({ index: 2 });
   await book.locator('label:has(input[value="Tally"])').click();
   await book.locator('label:has(input[name="window"])').first().click();
-  await book.getByRole("button", { name: /Book a 45-Minute iPad Walkthrough/ }).click();
+  await book.getByRole("button", { name: /Book a 45-Minute Walkthrough/ }).click();
   await pause(1200);
   await book.screenshot({ path: `${OUT}/${vp.name}-14-form-success.png` });
 

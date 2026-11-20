@@ -47,6 +47,7 @@ export const ENTITIES: Entity[] = [
     },
     payables: 14_880_000,
     vat: { period: "Aug–Oct 2026", outputVat: 1_523_000, inputVat: 1_264_100, due: "2026-11-28" },
+    docs: { avgSale: 18_500, avgPurchase: 42_000 },
   },
   {
     id: "tradB",
@@ -72,6 +73,7 @@ export const ENTITIES: Entity[] = [
     },
     payables: 9_340_000,
     vat: { period: "Aug–Oct 2026", outputVat: 212_000, inputVat: 498_600, due: "2026-11-28" },
+    docs: { avgSale: 36_000, avgPurchase: 95_000 },
   },
   {
     id: "mfgA",
@@ -100,6 +102,7 @@ export const ENTITIES: Entity[] = [
     },
     payables: 10_120_000,
     vat: { period: "Aug–Oct 2026", outputVat: 1_104_000, inputVat: 865_300, due: "2026-11-28" },
+    docs: { avgSale: 64_000, avgPurchase: 38_000 },
   },
   {
     id: "mfgB",
@@ -122,6 +125,7 @@ export const ENTITIES: Entity[] = [
     },
     payables: 4_960_000,
     vat: { period: "Sep–Nov 2026", outputVat: 472_000, inputVat: 391_500, due: "2026-12-28" },
+    docs: { avgSale: 9_800, avgPurchase: 14_000 },
   },
   {
     id: "distA",
@@ -150,6 +154,7 @@ export const ENTITIES: Entity[] = [
     },
     payables: 22_310_000,
     vat: { period: "Aug–Oct 2026", outputVat: 2_275_000, inputVat: 1_902_400, due: "2026-11-28" },
+    docs: { avgSale: 6_200, avgPurchase: 88_000 },
   },
   {
     id: "distB",
@@ -175,6 +180,7 @@ export const ENTITIES: Entity[] = [
     },
     payables: 3_140_000,
     vat: { period: "Sep–Nov 2026", outputVat: 412_000, inputVat: 298_700, due: "2026-12-28" },
+    docs: { avgSale: 2_400, avgPurchase: 21_000, webShare: 0.22, avgWebOrder: 420 },
   },
   {
     id: "contA",
@@ -204,6 +210,7 @@ export const ENTITIES: Entity[] = [
     },
     payables: 15_460_000,
     vat: { period: "Aug–Oct 2026", outputVat: 1_302_000, inputVat: 1_118_600, due: "2026-11-28" },
+    docs: { avgSale: 410_000, avgPurchase: 26_000 },
   },
   {
     id: "contB",
@@ -226,6 +233,7 @@ export const ENTITIES: Entity[] = [
     },
     payables: 2_470_000,
     vat: { period: "Sep–Nov 2026", outputVat: 298_000, inputVat: 217_900, due: "2026-12-28" },
+    docs: { avgSale: 85_000, avgPurchase: 12_500 },
   },
   {
     id: "propA",
@@ -251,6 +259,7 @@ export const ENTITIES: Entity[] = [
     },
     payables: 1_120_000,
     vat: { period: "Aug–Oct 2026", outputVat: 241_000, inputVat: 96_400, due: "2026-11-28" },
+    docs: { avgSale: 46_000, avgPurchase: 8_500 },
   },
   {
     id: "propB",
@@ -273,6 +282,7 @@ export const ENTITIES: Entity[] = [
     },
     payables: 610_000,
     vat: { period: "Aug–Oct 2026", outputVat: 18_400, inputVat: 9_200, due: "2026-11-28" },
+    docs: { avgSale: 7_800, avgPurchase: 5_200 },
   },
 ];
 

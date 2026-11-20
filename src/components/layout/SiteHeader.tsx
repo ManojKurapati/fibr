@@ -6,11 +6,11 @@ import { CtaButton, PRIMARY_CTA } from "../ui/CtaButton";
 import { Wordmark } from "../ui/Wordmark";
 
 const NAV = [
+  { href: "#pipeline", label: "Pipeline" },
   { href: "#tour", label: "Product" },
   { href: "#roles", label: "Who it's for" },
   { href: "#uae", label: "Why now" },
   { href: "#security", label: "Security" },
-  { href: "#pilot", label: "Pilot" },
   { href: "#faq", label: "FAQ" },
 ];
 

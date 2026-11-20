@@ -11,12 +11,12 @@ export function PilotTimeline() {
           eyebrow="The 4-week pilot"
           title={
             <>
-              Live on the iPad
+              Every movement visible
               <br />
               <em className="italic">in four weeks.</em>
             </>
           }
-          lede="Start with 2–3 pilot companies. Prove the numbers tie out, put it in the owner's hands, then roll out the rest at your pace."
+          lede="Start with 2–3 pilot companies. Connect their sources, prove every number ties out, then roll out the rest at your pace."
         />
 
         <ol className="relative mt-14 grid gap-0 lg:mt-20 lg:grid-cols-5">

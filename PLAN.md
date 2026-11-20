@@ -1,5 +1,7 @@
 # fibr marketing website: architecture blueprint
 
+> **Positioning update (supersedes iPad-led copy below):** the pitch is financial visibility: every source captured, a data pipeline for every transaction, invoice and receipt, every number traceable to source. CTA is "Book a 45-Minute Walkthrough". Tour moment 06 is "Trace to source". A Pipeline section sits between the problem and the tour. See CLAUDE.md → Vocabulary.
+
 ## Context
 The repo is new: it holds only `README.md` and `CLAUDE.md`. We are building the fibr marketing site from scratch. CLAUDE.md sets the rules (Product Truth, Anti-"AI Slop" design rules, Engineering & Verification). The site's centrepiece is a working landscape iPad Pro mockup running the fibr app. Every section supports one CTA: **"Book a 45-Minute iPad Walkthrough"**.
 

@@ -70,6 +70,25 @@ export interface Entity {
   };
   payables: number;
   vat: VatReturn;
+  /** Average document sizes, used to derive how many movements the pipeline captures. */
+  docs: { avgSale: number; avgPurchase: number; webShare?: number; avgWebOrder?: number };
+}
+
+export type MovementKind = "Sales invoice" | "Receipt" | "Purchase invoice" | "Payment" | "Web order";
+
+export interface Movement {
+  id: string;
+  entityId: EntityId;
+  kind: MovementKind;
+  ref: string;
+  /** ISO date. */
+  date: string;
+  time?: string;
+  counterparty: string;
+  amount: number;
+  source: LedgerSource;
+  /** For sales invoices: days outstanding if unpaid. */
+  daysOutstanding?: number;
 }
 
 export interface Maturity {

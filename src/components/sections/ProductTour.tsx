@@ -28,7 +28,7 @@ export function ProductTour() {
               What changes on <em className="italic">Monday morning.</em>
             </>
           }
-          lede="Six moments from the owner's week, running on the same illustrative group as above. Pick one; the iPad follows."
+          lede="Six moments from the owner's week, running on the same illustrative group as above. Pick one; the demo follows."
         />
 
         <div className="mt-14 lg:mt-20">
