@@ -1,0 +1,143 @@
+@import "tailwindcss";
+
+/* ---------- Design tokens (CLAUDE.md) ---------- */
+:root {
+  --bg-canvas: #f8f7f4;
+  --bg-surface: #ffffff;
+  --hairline: #e6e4dd;
+  --hairline-strong: #d6d3ca;
+  --bg-obsidian: #0a0f1a;
+  --obsidian-raised: #111827;
+  --obsidian-hairline: #1f2937;
+  --ink-primary: #0b1221;
+  --ink-muted: #525b6b;
+  --ink-faint: #667085;
+  --ink-inverse: #f1efea;
+  --ink-inverse-muted: #9aa3b2;
+  --accent-emerald: #0e9f6e;
+  --accent-emerald-soft: #e3f4ec;
+  --accent-emerald-ink: #0a7552;
+  --accent-amber: #c27803;
+  --accent-amber-soft: #fbf0dc;
+  --accent-amber-ink: #8f5602;
+
+  /* iPad app surfaces */
+  --app-bg: #f3f2ee;
+  --app-sidebar: #ebe9e3;
+}
+
+@theme inline {
+  --color-canvas: var(--bg-canvas);
+  --color-surface: var(--bg-surface);
+  --color-hairline: var(--hairline);
+  --color-hairline-strong: var(--hairline-strong);
+  --color-obsidian: var(--bg-obsidian);
+  --color-obsidian-raised: var(--obsidian-raised);
+  --color-obsidian-hairline: var(--obsidian-hairline);
+  --color-ink: var(--ink-primary);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-faint: var(--ink-faint);
+  --color-ink-inverse: var(--ink-inverse);
+  --color-ink-inverse-muted: var(--ink-inverse-muted);
+  --color-emerald: var(--accent-emerald);
+  --color-emerald-soft: var(--accent-emerald-soft);
+  --color-emerald-ink: var(--accent-emerald-ink);
+  --color-amber: var(--accent-amber);
+  --color-amber-soft: var(--accent-amber-soft);
+  --color-amber-ink: var(--accent-amber-ink);
+  --color-app: var(--app-bg);
+  --color-app-sidebar: var(--app-sidebar);
+
+  --font-display: var(--font-instrument-serif), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* ---------- Base ---------- */
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 5rem;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background: var(--bg-canvas);
+  color: var(--ink-primary);
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background: #0b1221;
+  color: #f8f7f4;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent-emerald);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ---------- Type utilities ---------- */
+@utility display {
+  font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  line-height: 0.96;
+}
+
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  line-height: 1.2;
+}
+
+/* Every financial number, date and timestamp. */
+@utility num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums lining-nums slashed-zero;
+  font-feature-settings: "tnum" 1, "lnum" 1, "zero" 1;
+  letter-spacing: -0.01em;
+}
+
+@utility no-scrollbar {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Recharts: tabular mono ticks, no focus outline box on SVG surface */
+.recharts-cartesian-axis-tick-value,
+.recharts-text {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+}
+.recharts-surface:focus,
+.recharts-wrapper:focus,
+.recharts-sector:focus,
+.recharts-rectangle:focus {
+  outline: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

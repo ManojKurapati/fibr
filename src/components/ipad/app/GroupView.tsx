@@ -1,0 +1,137 @@
+"use client";
+
+import { AlertTriangle, ChevronRight } from "lucide-react";
+import { PNL_PERIOD } from "@/data/mockGroup";
+import type { EntityId } from "@/data/names";
+import { exceptions, groupTotals, summaries } from "@/lib/aggregate";
+import { aed, compact, pct } from "@/lib/format";
+import { SourceBadge } from "../SourceBadge";
+import { Sparkline } from "../Sparkline";
+
+const totals = groupTotals();
+const tiles = summaries();
+const allExceptions = exceptions();
+
+export function GroupView({ onOpenEntity }: { onOpenEntity: (id: EntityId) => void }) {
+  const kpis = [
+    { label: "Group cash · today", value: compact(totals.cashToday, 2), sub: `Oct close ${compact(totals.cashOct, 1)}`, tone: "emerald" as const },
+    { label: "Revenue YTD", value: compact(totals.revenue, 1), sub: `${PNL_PERIOD} · EBITDA ${pct(totals.ebitda / totals.revenue)}`, tone: "ink" as const },
+    { label: "Receivables > 90 days", value: compact(totals.over90, 2), sub: `${pct(totals.over90 / totals.receivables)} of ${compact(totals.receivables, 1)} owed`, tone: "amber" as const },
+    { label: "Undrawn bank lines", value: compact(totals.undrawn, 1), sub: `of ${compact(totals.facilityLimit, 1)} limits`, tone: "emerald" as const },
+  ];
+
+  return (
+    <div className="h-full overflow-y-auto overscroll-contain px-4 pb-5 pt-1 @min-[54rem]:px-5">
+      <ViewHeader title="Group overview" subtitle={`All ${tiles.length} companies · AED`} />
+
+      {/* KPI strip */}
+      <div className="grid grid-cols-2 gap-2 @min-[54rem]:grid-cols-4 @min-[54rem]:gap-2.5">
+        {kpis.map((k) => (
+          <div key={k.label} className="rounded-[14px] border border-hairline bg-white px-3 py-2.5 @min-[54rem]:px-3.5 @min-[54rem]:py-3">
+            <p className="flex items-center gap-1.5 text-[10.5px] font-medium text-ink-muted">
+              <span
+                className={`size-1.5 rounded-full ${k.tone === "emerald" ? "bg-emerald" : k.tone === "amber" ? "bg-amber" : "bg-ink"}`}
+                aria-hidden
+              />
+              {k.label}
+            </p>
+            <p className="mt-1 flex items-baseline gap-1">
+              <span className="num text-[10px] font-medium text-ink-faint">AED</span>
+              <span className="num text-[19px] font-semibold leading-none tracking-[-0.03em] @min-[54rem]:text-[22px]">{k.value}</span>
+            </p>
+            <p className="num mt-1 truncate text-[10px] text-ink-faint">{k.sub}</p>
+          </div>
+        ))}
+      </div>
+
+      {/* Entity tiles */}
+      <div className="mb-2 mt-4 flex items-baseline justify-between">
+        <h3 className="text-[12px] font-semibold tracking-[-0.01em]">Companies</h3>
+        <p className="text-[10.5px] text-ink-faint">Tap a company for P&amp;L and cash</p>
+      </div>
+      <ul className="grid grid-cols-2 gap-2 @min-[54rem]:grid-cols-5 @min-[54rem]:gap-2.5">
+        {tiles.map((t) => (
+          <li key={t.entity.id}>
+            <button
+              type="button"
+              onClick={() => onOpenEntity(t.entity.id)}
+              className="group relative flex w-full flex-col rounded-[14px] border border-hairline bg-white p-3 text-left transition-[box-shadow,transform,border-color] duration-200 hover:border-hairline-strong hover:shadow-[0_6px_18px_-10px_rgba(11,18,33,0.35)] active:scale-[0.985]"
+              aria-label={`${t.entity.name}: cash ${aed(t.cashToday, { compact: true, dp: 2 })}. Open details`}
+            >
+              <span className="flex h-4 items-center justify-between gap-1">
+                <span className="text-[9.5px] font-semibold uppercase tracking-[0.08em] text-ink-faint">{t.entity.sector}</span>
+                {t.exceptionCount ? (
+                  <span className="num inline-flex items-center gap-0.5 rounded-full bg-amber-soft px-1.5 py-px text-[9.5px] font-semibold text-amber-ink">
+                    <AlertTriangle className="size-2.5" aria-hidden />
+                    {t.exceptionCount}
+                  </span>
+                ) : (
+                  <span className="size-1.5 rounded-full bg-emerald" aria-hidden />
+                )}
+              </span>
+              <span className="mt-1.5 truncate text-[12.5px] font-semibold leading-tight tracking-[-0.01em]">{t.entity.name}</span>
+              <span className="truncate text-[10px] leading-tight text-ink-faint">{t.entity.jurisdiction}</span>
+
+              <span className="mt-2.5 flex items-baseline gap-1">
+                <span className="num text-[9.5px] text-ink-faint">AED</span>
+                <span className="num text-[17px] font-semibold leading-none tracking-[-0.03em]">{compact(t.cashToday, 2)}</span>
+              </span>
+              <span className="text-[9.5px] text-ink-faint">cash today</span>
+
+              <Sparkline values={t.monthlyRevenue} className="mt-2 h-6 w-full text-ink/70" />
+
+              <span className="mt-1.5 flex items-center justify-between border-t border-hairline pt-1.5 text-[10px]">
+                <span className="text-ink-muted">
+                  Rev <span className="num text-ink">{compact(t.revenue, 1)}</span>
+                </span>
+                <span className={`num font-medium ${t.netMargin < 0 ? "text-amber-ink" : "text-ink"}`}>NP {pct(t.netMargin)}</span>
+              </span>
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      {/* Exceptions feed */}
+      <div className="mb-2 mt-4 flex items-baseline justify-between">
+        <h3 className="flex items-center gap-1.5 text-[12px] font-semibold tracking-[-0.01em]">
+          Flagged for you
+          <span className="num rounded-full bg-amber-soft px-1.5 text-[10px] font-semibold text-amber-ink">{allExceptions.length}</span>
+        </h3>
+        <p className="text-[10.5px] text-ink-faint">Raised automatically from the ledgers</p>
+      </div>
+      <ul className="grid gap-2 @min-[54rem]:grid-cols-3 @min-[54rem]:gap-2.5">
+        {allExceptions.slice(0, 3).map((x) => (
+          <li key={x.id}>
+            <button
+              type="button"
+              disabled={!x.entityId}
+              onClick={() => x.entityId && onOpenEntity(x.entityId)}
+              className="flex w-full items-start gap-2.5 rounded-[14px] border border-hairline bg-white p-3 text-left transition-colors enabled:hover:border-hairline-strong"
+            >
+              <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-full bg-amber-soft text-amber-ink" aria-hidden>
+                <AlertTriangle className="size-3" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="block truncate text-[11.5px] font-semibold leading-snug">{x.title}</span>
+                <span className="mt-0.5 line-clamp-2 block text-[10.5px] leading-snug text-ink-muted">{x.detail}</span>
+              </span>
+              {x.entityId ? <ChevronRight className="mt-1 size-3.5 shrink-0 text-ink-faint" aria-hidden /> : null}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export function ViewHeader({ title, subtitle }: { title: string; subtitle: string }) {
+  return (
+    <div className="mb-3 flex flex-wrap items-end justify-between gap-x-3 gap-y-1.5 @min-[54rem]:mb-3.5">
+      <div>
+        <h2 className="font-display text-[24px] leading-none tracking-[-0.02em] @min-[54rem]:text-[28px]">{title}</h2>
+        <p className="mt-1 text-[11px] text-ink-muted">{subtitle}</p>
+      </div>
+      <SourceBadge />
+    </div>
+  );
+}
