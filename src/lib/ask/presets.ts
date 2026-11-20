@@ -64,10 +64,10 @@ export const PRESETS: Preset[] = [
         chart: {
           title: "Cash by company · 31 Oct, AED",
           layout: "vertical",
-          data: rows.map((s, i) => ({ name: shortName(s.entity.name), value: s.cashOct, highlight: i < 3 ? "emerald" : "ink" })),
+          data: rows.map((s) => ({ name: shortName(s.entity.name), value: s.cashOct, highlight: "emerald" })),
         },
         footnote: `Today's balance is ${aed(t.cashToday, { compact: true, dp: 2 })} (${t.cashToday >= t.cashOct ? "+" : "−"}${compact(Math.abs(t.cashToday - t.cashOct), 0)} since close).`,
-        steps: ["Reading 10 ledgers", "Matching 15 bank accounts", "Totalling at 31 Oct close"],
+        steps: [`Reading ${ENTITIES.length} companies' ledgers`, `Matching ${accounts} bank accounts`, "Totalling at the 31 Oct close"],
       };
     },
   },
@@ -98,7 +98,7 @@ export const PRESETS: Preset[] = [
           data: byCo.map((s) => ({ name: shortName(s.entity.name), value: s.over90, highlight: s.over90 >= 2_000_000 ? "amber" : "ink" })),
         },
         footnote: `Over-90 balances are ${pct(t.over90 / t.receivables)} of total receivables of ${aed(t.receivables, { compact: true, dp: 1 })}.`,
-        steps: ["Reading 10 receivables ledgers", "Ageing 14 debtor balances", "Ranking by amount"],
+        steps: [`Reading ${ENTITIES.length} receivables ledgers`, `Ageing ${debtors.length} balances over 90 days`, "Ranking by amount"],
       };
     },
   },
@@ -130,7 +130,7 @@ export const PRESETS: Preset[] = [
           data: weeks.map((w) => ({ name: w.label, value: w.maturities, highlight: w.flagged ? "amber" : "ink" })),
         },
         footnote: `Undrawn lines across the group: ${aed(groupTotals().undrawn, { compact: true, dp: 1 })} on ${FACILITIES.length} facilities.`,
-        steps: ["Reading 13 facility schedules", "Building 13-week ladder", "Testing against cash forecast"],
+        steps: [`Reading ${FACILITIES.length} facility schedules`, "Building the 13-week ladder", "Testing against the cash forecast"],
       };
     },
   },
@@ -159,7 +159,7 @@ export const PRESETS: Preset[] = [
           data: rows.map((s) => ({ name: shortName(s.entity.name), value: s.entity.fy2025Revenue, highlight: s.auditRequired ? "ink" : "muted" })),
         },
         footnote: "Corporate tax is filed entity by entity. This is a reading of the rules, not tax advice; confirm with your adviser.",
-        steps: ["Reading FY2025 revenue", "Checking free-zone status", "Applying audit triggers"],
+        steps: [`Reading FY2025 revenue for ${rows.length} companies`, "Checking free-zone status", "Applying audit triggers"],
       };
     },
   },

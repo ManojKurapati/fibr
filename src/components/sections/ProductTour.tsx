@@ -61,7 +61,7 @@ export function ProductTour() {
                     }
                   }}
                   tabIndex={on ? 0 : -1}
-                  className={`group relative shrink-0 rounded-full px-4 py-2.5 text-left ring-1 ring-inset transition-colors lg:rounded-none lg:border-t lg:px-0 lg:pb-0 lg:pr-4 lg:pt-5 lg:ring-0 ${
+                  className={`group relative shrink-0 rounded-full px-4 py-2.5 text-left ring-1 lg:flex lg:flex-col lg:justify-start lg:self-stretch ring-inset transition-colors lg:rounded-none lg:border-t lg:px-0 lg:pb-0 lg:pr-4 lg:pt-5 lg:ring-0 ${
                     on ? "bg-white/10 ring-white/15 lg:border-white/25 lg:bg-transparent" : "ring-white/10 hover:bg-white/5 lg:border-obsidian-hairline lg:hover:bg-transparent"
                   }`}
                 >
@@ -98,7 +98,7 @@ export function ProductTour() {
               transition={{ duration: 0.3, ease, delay: 0.05 }}
               className="font-display text-[1.625rem] leading-tight tracking-[-0.02em] text-ink-inverse sm:text-[1.875rem] lg:col-span-6"
             >
-              <span className="eyebrow mr-3 align-middle text-emerald">For the owner</span>
+              <span className="eyebrow mb-3 block text-emerald">For the owner</span>
               {current.outcome}
             </motion.p>
           </div>

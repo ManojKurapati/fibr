@@ -81,7 +81,7 @@ export function AnswerBars({
           height={height}
           data={data}
           layout={layout}
-          margin={horizontalBars ? { top: 0, right: 44, bottom: 0, left: 0 } : { top: 14, right: 4, bottom: 0, left: -18 }}
+          margin={horizontalBars ? { top: 0, right: 52, bottom: 0, left: 0 } : { top: 14, right: 4, bottom: 0, left: -18 }}
           barCategoryGap={horizontalBars ? 3 : "22%"}
           accessibilityLayer
         >
@@ -156,6 +156,10 @@ export function MaturityLadder({
   const [ref, width] = useElementWidth<HTMLDivElement>();
   const data = weeks.map((w) => ({ ...w.byType, label: w.label, week: w.week, cash: w.projectedCash, flagged: w.flagged }));
   const maxCash = Math.max(...weeks.map((w) => w.projectedCash));
+  const step = 4_000_000;
+  const niceMax = Math.ceil(Math.max(...weeks.map((w) => w.maturities)) / step) * step;
+  const ticks = Array.from({ length: niceMax / step + 1 }, (_, i) => i * step);
+  const selectedLabel = weeks.find((w) => w.week === selected)?.label;
   return (
     <div ref={ref} style={{ height }} className="w-full">
       {width > 0 ? (
@@ -177,10 +181,11 @@ export function MaturityLadder({
           {weeks
             .filter((w) => w.flagged)
             .map((w) => (
-              <ReferenceArea key={w.week} yAxisId="m" x1={w.label} x2={w.label} fill={AMBER} fillOpacity={0.09} ifOverflow="extendDomain" />
+              <ReferenceArea key={w.week} yAxisId="m" x1={w.label} x2={w.label} fill={AMBER} fillOpacity={0.12} />
             ))}
+          {selectedLabel ? <ReferenceArea yAxisId="m" x1={selectedLabel} x2={selectedLabel} fill="none" stroke={INK} strokeOpacity={0.5} strokeDasharray="3 3" /> : null}
           <XAxis dataKey="label" tickLine={false} axisLine={false} tick={tick} interval={width < 520 ? 1 : 0} />
-          <YAxis yAxisId="m" tickLine={false} axisLine={false} tick={tick} tickFormatter={(v: number) => compact(v, 0)} width={46} />
+          <YAxis yAxisId="m" tickLine={false} axisLine={false} tick={tick} domain={[0, niceMax]} ticks={ticks} tickFormatter={(v: number) => (v ? `${v / 1_000_000}m` : "0")} width={46} />
           <YAxis yAxisId="c" orientation="right" hide domain={[0, Math.ceil(maxCash * 1.15)]} />
           <Tooltip cursor={{ fill: "rgba(11,18,33,0.04)" }} content={<ChartTooltip />} />
           {FACILITY_TYPES.map((t, i) => (
@@ -194,13 +199,6 @@ export function MaturityLadder({
               radius={i === FACILITY_TYPES.length - 1 ? [3, 3, 0, 0] : 0}
               animationDuration={600}
             >
-              {data.map((d) => (
-                <Cell
-                  key={`${t}-${d.week}`}
-                  fill={TYPE_COLORS[t]}
-                  fillOpacity={selected === null || selected === d.week ? 1 : 0.35}
-                />
-              ))}
             </Bar>
           ))}
           <Line

@@ -128,7 +128,7 @@ function Row({ label, value, strong = false, note, tone }: { label: string; valu
       <span className={`text-[11.5px] ${strong ? "text-ink" : "text-ink-muted"}`}>{label}</span>
       <span className="flex items-baseline gap-2">
         {note ? <span className={`num text-[10px] ${tone === "amber" ? "text-amber-ink" : "text-ink-faint"}`}>{note}</span> : null}
-        <span className={`num text-[12px] ${value < 0 ? "text-amber-ink" : "text-ink"}`}>{amount(value)}</span>
+        <span className={`num text-[12px] ${strong && value < 0 ? "text-amber-ink" : "text-ink"}`}>{amount(value)}</span>
       </span>
     </div>
   );

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "motion/react";
-import { ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
+import { ArrowRight, CheckCircle2, ChevronDown, Loader2 } from "lucide-react";
 import { useId, useState, type ReactNode } from "react";
 import { COMPANY_COUNTS, SOURCES, TIME_WINDOWS } from "@/data/content";
 import { BookingSchema, ROLE_LABELS, fieldErrors, type BookingErrors } from "@/lib/booking";
@@ -89,6 +89,7 @@ export function BookingForm() {
           <input id={`${uid}-phone`} name="phone" type="tel" autoComplete="tel" placeholder="+971" className={`${field} ${border("phone")}`} aria-invalid={!!errors.phone} aria-describedby={errors.phone ? `${uid}-phone-err` : undefined} />
         </Field>
         <Field id={`${uid}-role`} label="Your role" error={errors.role}>
+          <Chevron />
           <select id={`${uid}-role`} name="role" defaultValue="" className={`${field} ${border("role")} appearance-none`} aria-invalid={!!errors.role} aria-describedby={errors.role ? `${uid}-role-err` : undefined}>
             <option value="" disabled>
               Choose…
@@ -99,6 +100,7 @@ export function BookingForm() {
           </select>
         </Field>
         <Field id={`${uid}-companies`} label="Companies in the group" error={errors.companies}>
+          <Chevron />
           <select id={`${uid}-companies`} name="companies" defaultValue="" className={`${field} ${border("companies")} appearance-none`} aria-invalid={!!errors.companies} aria-describedby={errors.companies ? `${uid}-companies-err` : undefined}>
             <option value="" disabled>
               Choose…
@@ -176,9 +178,13 @@ export function BookingForm() {
   );
 }
 
+function Chevron() {
+  return <ChevronDown aria-hidden className="pointer-events-none absolute bottom-3.5 right-3.5 size-4 text-ink-muted" />;
+}
+
 function Field({ id, label, error, children }: { id: string; label: string; error?: string; children: ReactNode }) {
   return (
-    <div>
+    <div className="relative">
       <label htmlFor={id} className="text-[0.8125rem] font-semibold">
         {label}
       </label>

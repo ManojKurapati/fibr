@@ -21,9 +21,11 @@ export function CommercialFaq() {
             <div className="lg:sticky lg:top-28">
               <Eyebrow>Commercial model</Eyebrow>
               <h2 className="display mt-5 text-[clamp(2.5rem,5.2vw,4.5rem)]">
-                Priced for <em className="italic">the group.</em>
+                Priced for
+                <br />
+                <em className="italic">the whole group.</em>
               </h2>
-              <div className="mt-8 rounded-[24px] bg-ink p-7 text-ink-inverse sm:p-9">
+              <div className="mt-8 rounded-[24px] bg-ink p-6 text-ink-inverse sm:p-9">
                 <p className="font-display text-[1.75rem] leading-[1.1] tracking-[-0.02em] sm:text-[2rem]">{COMMERCIAL_LINE}</p>
                 <ul className="mt-7 space-y-3 border-t border-white/10 pt-6 text-[0.9375rem] text-ink-inverse-muted">
                   <li className="flex justify-between gap-4">

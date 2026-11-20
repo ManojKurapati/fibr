@@ -85,7 +85,7 @@ export function AskFibr() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ messages: payload }),
       });
-      if (!res.ok || !res.body) {
+      if (!res.ok || !res.body || (res.headers.get("content-type") ?? "").includes("application/json")) {
         set(FALLBACK, true, true);
         return;
       }
@@ -114,7 +114,7 @@ export function AskFibr() {
         <div className="mb-2 flex flex-wrap items-end justify-between gap-x-3 gap-y-1.5">
           <div>
             <h2 className="font-display text-[24px] leading-none tracking-[-0.02em] @min-[54rem]:text-[28px]">Ask fibr</h2>
-            <p className="mt-1 text-[11px] text-ink-muted">Plain-English questions, answered from all 10 ledgers</p>
+            <p className="mt-1 hidden text-[11px] text-ink-muted @min-[40rem]:block">Plain-English questions, answered from every company&apos;s ledgers</p>
           </div>
           <SourceBadge />
         </div>
@@ -174,7 +174,7 @@ export function AskFibr() {
       </div>
 
       {/* Composer */}
-      <div className="shrink-0 border-t border-hairline bg-app px-4 pb-3 pt-2 @min-[54rem]:px-5">
+      <div className="shrink-0 border-t border-hairline bg-app px-4 pb-2 pt-2 @min-[54rem]:px-5 @min-[54rem]:pb-3">
         {!empty ? (
           <div className="no-scrollbar mx-auto mb-2 flex max-w-[760px] gap-1.5 overflow-x-auto">
             {PRESETS.map((p) => (
@@ -218,7 +218,10 @@ export function AskFibr() {
             <ArrowUp className="size-4" aria-hidden />
           </button>
         </form>
-        <p className="mx-auto mt-1.5 max-w-[760px] text-center text-[9.5px] text-ink-faint">AI answers from illustrative data. Not a real group. Read-only: fibr never writes to your ledgers.</p>
+        <p className="mx-auto mt-1.5 max-w-[760px] text-center text-[9.5px] text-ink-faint">
+          <span className="@min-[40rem]:hidden">AI · illustrative data · read-only</span>
+          <span className="hidden @min-[40rem]:inline">AI answers from illustrative data. Not a real group. Read-only: fibr never writes to your ledgers.</span>
+        </p>
       </div>
     </div>
   );

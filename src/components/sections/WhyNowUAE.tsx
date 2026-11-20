@@ -18,7 +18,8 @@ const FACTS = [
     inFibr: "Every company's profit in one consistent format, side by side.",
   },
   {
-    figure: "AED 50m",
+    figure: "50m",
+    unit: "AED",
     title: "Audited statements above AED 50m",
     body: "Companies with revenue above AED 50m need audited financial statements.",
     inFibr: `${auditCount} of ${ENTITIES.length} companies in the demo group flagged automatically from last year's revenue.`,
@@ -60,7 +61,10 @@ export function WhyNowUAE() {
           {FACTS.map((f) => (
             <div key={f.title} className="grid gap-4 border-b border-obsidian-hairline py-8 sm:grid-cols-12 sm:gap-8 lg:py-10">
               <dt className="sm:col-span-4 lg:col-span-4">
-                <span className="num block text-[clamp(3rem,6.5vw,5.5rem)] font-medium leading-[0.9] tracking-[-0.06em] text-ink-inverse">{f.figure}</span>
+                <span className="num flex items-start gap-2 text-[clamp(3rem,6.5vw,5.5rem)] font-medium leading-[0.9] tracking-[-0.06em] text-ink-inverse">
+                  {"unit" in f && f.unit ? <span className="mt-[0.35em] text-[0.22em] tracking-normal text-ink-inverse-muted">{f.unit}</span> : null}
+                  {f.figure}
+                </span>
               </dt>
               <dd className="sm:col-span-8 lg:col-span-5">
                 <p className="text-[1.125rem] font-semibold tracking-[-0.01em] text-ink-inverse">{f.title}</p>

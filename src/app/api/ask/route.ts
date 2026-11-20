@@ -20,8 +20,12 @@ const REFUSAL = "I can only answer questions about the group's finances in this 
 let client: Anthropic | null = null;
 let systemPrompt: string | null = null;
 
-function unavailable(code: string, status = 503) {
-  return Response.json({ ok: false, code }, { status });
+/**
+ * Live answers unavailable (no key, kill switch, rate limit, upstream error). Returned as 200 JSON so the
+ * browser logs nothing; the client sees `ok: false` and switches to demo mode.
+ */
+function unavailable(code: string) {
+  return Response.json({ ok: false, code }, { status: 200, headers: { "Cache-Control": "no-store" } });
 }
 
 /** Merge consecutive same-role turns so the API always sees alternating roles starting with user. */
@@ -40,13 +44,13 @@ export async function POST(req: Request) {
   if (process.env.ASK_FIBR_ENABLED === "false" || !process.env.ANTHROPIC_API_KEY) return unavailable("disabled");
 
   const ip = (req.headers.get("x-forwarded-for") ?? "").split(",")[0]?.trim() || "local";
-  if (!allow(ip)) return unavailable("rate_limited", 429);
+  if (!allow(ip)) return unavailable("rate_limited");
 
   let body: z.infer<typeof Body>;
   try {
     body = Body.parse(await req.json());
   } catch {
-    return unavailable("bad_request", 400);
+    return unavailable("bad_request");
   }
 
   client ??= new Anthropic();

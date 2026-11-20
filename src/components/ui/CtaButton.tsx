@@ -27,11 +27,11 @@ export function CtaButton({
   className?: string;
   size?: "sm" | "md";
 }) {
-  const pad = size === "sm" ? "h-10 px-4 text-[0.875rem]" : "h-12 px-6 text-[0.9375rem]";
+  const pad = size === "sm" ? "min-h-10 px-4 py-2 text-[0.875rem]" : "min-h-12 px-6 py-3 text-[0.9375rem]";
   return (
     <a
       href={href}
-      className={`group inline-flex shrink-0 items-center whitespace-nowrap justify-center gap-2 rounded-full font-semibold tracking-[-0.01em] transition-[background-color,box-shadow,transform] duration-200 active:translate-y-px ${pad} ${styles[variant]} ${className}`}
+      className={`group inline-flex max-w-full shrink-0 items-center text-center leading-snug sm:whitespace-nowrap justify-center gap-2 rounded-full font-semibold tracking-[-0.01em] transition-[background-color,box-shadow,transform] duration-200 active:translate-y-px ${pad} ${styles[variant]} ${className}`}
     >
       <span>{children}</span>
       {arrow ? (

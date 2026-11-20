@@ -1,22 +1,35 @@
 import { PROBLEMS, SOURCES } from "@/data/content";
+import { ENTITIES } from "@/data/mockGroup";
 import { Container } from "../ui/Container";
 import { SectionHeading } from "../ui/SectionHeading";
 
 /** Small illustrative vignettes. Labelled "e.g." because they are examples, not statistics. */
 function LedgersVisual() {
-  const exports = ["3 Oct", "18 Sep", "29 Sep", "7 Oct", "22 Sep"];
+  const exports: Record<string, string> = { Tally: "3 Oct", "Business Central": "18 Sep", "QuickBooks Online": "29 Sep", "Zoho Books": "7 Oct", Shopify: "22 Sep" };
   return (
-    <ul className="grid gap-2 sm:grid-cols-2" aria-label="Example: five ledgers exported on different dates">
-      {SOURCES.map((s, i) => (
-        <li
-          key={s}
-          className={`flex items-center justify-between rounded-[12px] border border-hairline bg-canvas px-3.5 py-3 ${i === 4 ? "sm:col-span-2" : ""}`}
-          style={{ transform: `rotate(${[-0.6, 0.5, 0.3, -0.4, 0.2][i]}deg)` }}
-        >
-          <span className="text-[0.875rem] font-semibold tracking-[-0.01em]">{s}</span>
-          <span className="num text-[0.75rem] text-ink-faint">export {exports[i]}</span>
-        </li>
-      ))}
+    <ul className="grid gap-2 sm:grid-cols-2" aria-label="Example: the demo group's companies spread across five ledgers, each exported on a different date">
+      {SOURCES.map((s, i) => {
+        const cos = ENTITIES.filter((e) => e.ledgers.includes(s));
+        return (
+          <li
+            key={s}
+            className={`rounded-[12px] border border-hairline bg-canvas px-3.5 py-3 ${i === 4 ? "sm:col-span-2" : ""}`}
+            style={{ transform: `rotate(${[-0.5, 0.4, 0.3, -0.35, 0.15][i]}deg)` }}
+          >
+            <span className="flex items-baseline justify-between gap-3">
+              <span className="text-[0.875rem] font-semibold tracking-[-0.01em]">{s}</span>
+              <span className="num shrink-0 text-[0.75rem] text-ink-faint">export {exports[s]}</span>
+            </span>
+            <span className="mt-2 flex flex-wrap gap-1">
+              {cos.map((c) => (
+                <span key={c.id} className="rounded-full bg-white px-2 py-0.5 text-[0.6875rem] text-ink-muted ring-1 ring-hairline">
+                  {c.name}
+                </span>
+              ))}
+            </span>
+          </li>
+        );
+      })}
     </ul>
   );
 }
@@ -115,8 +128,8 @@ export function StatusQuo() {
         <div className="mt-14 grid gap-3 lg:mt-20 lg:grid-cols-12 lg:gap-4">
           {PROBLEMS.map((p, i) => {
             const Visual = VISUALS[i]!;
-            const layout = ["lg:col-span-7 lg:row-span-2", "lg:col-span-5", "lg:col-span-5", "lg:col-span-12"][i];
-            const wide = i === 3;
+            const layout = ["lg:col-span-7", "lg:col-span-5", "lg:col-span-5", "lg:col-span-7"][i];
+            const wide = false;
             return (
               <article
                 key={p.n}

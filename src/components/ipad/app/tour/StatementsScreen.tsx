@@ -1,9 +1,11 @@
-import { consolidated, type StatementColumn } from "@/lib/aggregate";
+import { INTERCOMPANY } from "@/data/mockGroup";
+import { consolidated, getEntity, type StatementColumn } from "@/lib/aggregate";
 import { compact } from "@/lib/format";
 import { ViewHeader } from "../GroupView";
 
 const c = consolidated();
 const cols: StatementColumn[] = [...c.columns, c.eliminations, c.group];
+const maxNp = Math.max(...c.columns.map((x) => x.netProfit));
 const LINES: { key: keyof StatementColumn; label: string; strong?: boolean; negate?: boolean }[] = [
   { key: "revenue", label: "Revenue" },
   { key: "cogs", label: "Cost of sales", negate: true },
@@ -56,9 +58,39 @@ export function StatementsScreen() {
           </tbody>
         </table>
       </div>
-      <p className="mt-2 text-[10px] text-ink-faint">
-        Eliminations remove <span className="num">AED {compact(c.intercompanyTotal, 1)}</span> of intercompany rent, materials and packaging. No effect on group profit.
-      </p>
+      <div className="mt-2.5 grid gap-2.5 @min-[54rem]:grid-cols-2">
+        <div className="rounded-[14px] border border-hairline bg-white p-3">
+          <p className="text-[11.5px] font-semibold">Net profit by sector</p>
+          <ul className="mt-2.5 space-y-2">
+            {c.columns.map((col) => (
+              <li key={col.key} className="grid grid-cols-[6.5rem_1fr_3.25rem] items-center gap-3 text-[10.5px]">
+                <span className="text-ink-muted">{col.label}</span>
+                <span className="h-2 rounded-full bg-[#ecebe6]">
+                  <span className="block h-full rounded-full bg-ink" style={{ width: `${(col.netProfit / maxNp) * 100}%` }} />
+                </span>
+                <span className="num text-right">{compact(col.netProfit, 1)}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+        <div className="rounded-[14px] border border-hairline bg-white p-3">
+          <p className="flex items-baseline justify-between text-[11.5px] font-semibold">
+            Intercompany eliminated
+            <span className="num text-[10.5px] font-normal text-amber-ink">{compact(-c.intercompanyTotal, 1)}</span>
+          </p>
+          <ul className="mt-1.5">
+            {INTERCOMPANY.map((x) => (
+              <li key={`${x.from}-${x.to}`} className="flex items-baseline justify-between gap-2 border-t border-hairline py-[5px] text-[10.5px] first:border-t-0">
+                <span className="truncate text-ink-muted">
+                  <span className="text-ink">{getEntity(x.from).name}</span> → {getEntity(x.to).name} · {x.what}
+                </span>
+                <span className="num shrink-0">{compact(x.amount, 1)}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+      <p className="mt-2 text-[10px] text-ink-faint">Eliminations have no effect on group profit: the seller&apos;s revenue and the buyer&apos;s cost cancel out.</p>
     </div>
   );
 }
