@@ -6,13 +6,14 @@ import {
   ENTITIES,
   EXCEPTION_FACTS,
   FACILITIES,
+  INTERCOMPANY,
   LADDER_START_ISO,
   LADDER_WEEKS,
   TODAY_ISO,
   WEEKLY_NET_OPERATING,
 } from "../data/mockGroup";
 import type { EntityId } from "../data/names";
-import type { Debtor, Entity, Facility, FacilityType, FinanceException } from "./types";
+import type { Debtor, Entity, Facility, FacilityType, FinanceException, Sector } from "./types";
 import { addDays, aed, daysBetween, dateShort, pct } from "./format";
 
 const sum = (xs: readonly number[]): number => xs.reduce((a, b) => a + b, 0);
@@ -295,4 +296,43 @@ export function exceptions(): FinanceException[] {
 function summariseLite(id: EntityId): { grossMargin: number } {
   const e = getEntity(id);
   return { grossMargin: (e.pnl.revenue - e.pnl.cogs) / e.pnl.revenue };
+}
+
+/* ---------- Consolidated income statement by sector ---------- */
+
+
+export const SECTORS: Sector[] = ["Trading", "Manufacturing", "Distribution", "Contracting", "Property"];
+
+export interface StatementColumn {
+  key: string;
+  label: string;
+  revenue: number;
+  cogs: number;
+  grossProfit: number;
+  opex: number;
+  ebitda: number;
+  depreciation: number;
+  financeCost: number;
+  netProfit: number;
+}
+
+function column(key: string, label: string, p: { revenue: number; cogs: number; opex: number; depreciation: number; financeCost: number }): StatementColumn {
+  const grossProfit = p.revenue - p.cogs;
+  const ebitda = grossProfit - p.opex;
+  return { key, label, ...p, grossProfit, ebitda, netProfit: ebitda - p.depreciation - p.financeCost };
+}
+
+export function consolidated(): { columns: StatementColumn[]; eliminations: StatementColumn; group: StatementColumn; intercompanyTotal: number } {
+  const columns = SECTORS.map((sec) => {
+    const es = ENTITIES.filter((e) => e.sector === sec);
+    const t = (k: keyof Entity["pnl"]) => sum(es.map((e) => e.pnl[k]));
+    return column(sec, sec, { revenue: t("revenue"), cogs: t("cogs"), opex: t("opex"), depreciation: t("depreciation"), financeCost: t("financeCost") });
+  });
+  const ic = sum(INTERCOMPANY.map((x) => x.amount));
+  const icCogs = sum(INTERCOMPANY.filter((x) => x.buyerLine === "cogs").map((x) => x.amount));
+  const icOpex = ic - icCogs;
+  const eliminations = column("elim", "Eliminations", { revenue: -ic, cogs: -icCogs, opex: -icOpex, depreciation: 0, financeCost: 0 });
+  const c = (k: "revenue" | "cogs" | "opex" | "depreciation" | "financeCost") => sum(columns.map((x) => x[k])) + eliminations[k];
+  const group = column("group", "Group", { revenue: c("revenue"), cogs: c("cogs"), opex: c("opex"), depreciation: c("depreciation"), financeCost: c("financeCost") });
+  return { columns, eliminations, group, intercompanyTotal: ic };
 }

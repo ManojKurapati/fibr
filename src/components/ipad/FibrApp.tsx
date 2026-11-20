@@ -1,10 +1,10 @@
 "use client";
 
 import { AnimatePresence, motion } from "motion/react";
-import { BatteryFull, ChevronDown, Landmark, LayoutGrid, Search, Sparkles, Wifi } from "lucide-react";
+import { Landmark, LayoutGrid, Search, Sparkles } from "lucide-react";
 import { useId, useState } from "react";
-import { GROUP_NAME, type EntityId } from "@/data/names";
-import { ENTITIES } from "@/data/mockGroup";
+import type { EntityId } from "@/data/names";
+import { Avatar, GroupSwitcher, StatusBar } from "./AppChrome";
 import { AskFibr } from "./app/AskFibr";
 import { EntityDrawer } from "./app/EntityDrawer";
 import { FacilitiesView } from "./app/FacilitiesView";
@@ -35,20 +35,7 @@ export function FibrApp({ initialTab = "group", label = "fibr app demo" }: { ini
 
       {/* Top bar */}
       <div className="relative z-20 flex h-12 shrink-0 items-center justify-between gap-3 px-4 @min-[54rem]:h-[52px] @min-[54rem]:px-5">
-        <button type="button" className="flex min-w-0 items-center gap-2.5 rounded-lg text-left" aria-label={`${GROUP_NAME}, ${ENTITIES.length} companies`}>
-          <span className="grid size-7 shrink-0 place-items-center rounded-[8px] bg-ink font-display text-[17px] leading-none text-canvas shadow-[inset_0_-2px_0_rgba(255,255,255,0.08)]">
-            f
-          </span>
-          <span className="min-w-0">
-            <span className="flex items-center gap-1 text-[13px] font-semibold leading-tight tracking-[-0.01em]">
-              <span className="truncate">{GROUP_NAME}</span>
-              <ChevronDown className="size-3.5 shrink-0 text-ink-faint" aria-hidden />
-            </span>
-            <span className="block text-[10.5px] leading-tight text-ink-faint">
-              <span className="num">{ENTITIES.length}</span> companies · AED
-            </span>
-          </span>
-        </button>
+        <GroupSwitcher />
 
         {/* iPadOS floating tab bar (full layout) */}
         <TabBar uid={uid} tab={tab} onChange={setTab} className="absolute left-1/2 top-1/2 hidden -translate-x-1/2 -translate-y-1/2 @min-[54rem]:flex" />
@@ -57,9 +44,7 @@ export function FibrApp({ initialTab = "group", label = "fibr app demo" }: { ini
           <span className="hidden size-8 place-items-center rounded-full text-ink-muted @min-[54rem]:grid" aria-hidden>
             <Search className="size-4" />
           </span>
-          <span className="grid size-8 place-items-center rounded-full bg-[#d9d5cb] text-[11px] font-semibold text-ink" aria-label="Signed in as the group owner">
-            OW
-          </span>
+          <Avatar />
         </div>
       </div>
 
@@ -87,21 +72,6 @@ export function FibrApp({ initialTab = "group", label = "fibr app demo" }: { ini
       <div className="relative z-20 shrink-0 border-t border-hairline bg-app/95 px-3 pb-3 pt-2 backdrop-blur @min-[54rem]:hidden">
         <TabBar uid={`${uid}c`} tab={tab} onChange={setTab} className="flex w-full" stretch />
       </div>
-    </div>
-  );
-}
-
-function StatusBar() {
-  return (
-    <div className="flex h-6 shrink-0 items-center justify-between px-5 pt-1 text-[11px] font-semibold text-ink @min-[54rem]:px-6" aria-hidden>
-      <span className="num">
-        07:42 <span className="ml-1 font-medium text-ink-muted">Fri 20 Nov</span>
-      </span>
-      <span className="flex items-center gap-1.5">
-        <Wifi className="size-3.5" strokeWidth={2.5} />
-        <span className="num text-[10px]">100%</span>
-        <BatteryFull className="size-[18px]" strokeWidth={2} />
-      </span>
     </div>
   );
 }

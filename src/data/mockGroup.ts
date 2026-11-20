@@ -3,7 +3,7 @@
  * All amounts in AED. P&L is Jan–Oct 2026 year-to-date; balances are at the 31 Oct 2026 close
  * and at the latest pull (today). Totals are never hard-coded: see src/lib/aggregate.ts.
  */
-import { COMPANY_NAMES } from "./names";
+import { COMPANY_NAMES, type EntityId } from "./names";
 import type { Entity, Facility } from "../lib/types";
 
 /** The date the demo treats as "today" (Friday). */
@@ -318,3 +318,12 @@ export const EXCEPTION_FACTS = {
   mfgBOctGrossMargin: -0.021,
   singleDebtorThreshold: 1_500_000,
 } as const;
+
+/** Intercompany trading Jan–Oct 2026, eliminated on consolidation (no profit effect). */
+export const INTERCOMPANY: { from: EntityId; to: EntityId; what: string; amount: number; buyerLine: "cogs" | "opex" }[] = [
+  { from: "propA", to: "tradA", what: "Warehouse rent", amount: 2_400_000, buyerLine: "opex" },
+  { from: "propA", to: "distA", what: "Warehouse rent", amount: 3_100_000, buyerLine: "opex" },
+  { from: "tradA", to: "contA", what: "Building materials", amount: 4_600_000, buyerLine: "cogs" },
+  { from: "mfgA", to: "contA", what: "Fabricated steel", amount: 3_800_000, buyerLine: "cogs" },
+  { from: "mfgB", to: "distA", what: "Packaging", amount: 1_200_000, buyerLine: "cogs" },
+];

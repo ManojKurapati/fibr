@@ -44,3 +44,13 @@ test("exceptions and upcoming maturities derive from data", () => {
   assert.ok(exceptions().length >= 6);
   assert.ok(maturitiesWithin(4).every((m) => m.week <= 4));
 });
+
+import { consolidated } from "../src/lib/aggregate";
+test("consolidation: sectors + eliminations = group; eliminations have no profit effect", () => {
+  const c = consolidated();
+  const g = groupTotals();
+  assert.equal(c.columns.reduce((a, x) => a + x.revenue, 0), g.revenue);
+  assert.equal(c.group.revenue, g.revenue - c.intercompanyTotal);
+  assert.equal(c.eliminations.netProfit, 0);
+  assert.equal(c.group.netProfit, g.netProfit);
+});
