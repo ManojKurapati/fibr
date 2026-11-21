@@ -51,18 +51,18 @@ export function captureBySource(): { source: LedgerSource; companies: number; mo
 
 const PREFIX: Record<EntityId, string> = { tradA: "TA", tradB: "TB", mfgA: "MA", mfgB: "MB", distA: "DA", distB: "DB", contA: "CA", contB: "CB", propA: "PA", propB: "PB" };
 const CUSTOMERS: Record<Entity["sector"], string[]> = {
-  Trading: ["Contractor · Al Quoz", "Builder's merchant · Sharjah", "Developer · Dubai South"],
-  Manufacturing: ["Main contractor · Business Bay", "Distributor · Ajman", "FMCG brand owner · Sharjah"],
-  Distribution: ["Retail chain · Dubai", "Pharmacy group · Abu Dhabi", "Convenience chain · RAK"],
-  Contracting: ["Developer · JVC", "Hotel owner · Palm", "Main contractor · Dubai Hills"],
-  Property: ["Logistics tenant · Unit 9", "Tenant · Al Reem tower", "Retail tenant · Unit 3"],
+  Trading: ["Contractor, Al Quoz", "Builder's merchant, Sharjah", "Developer, Dubai South"],
+  Manufacturing: ["Main contractor, Business Bay", "Distributor, Ajman", "FMCG brand owner, Sharjah"],
+  Distribution: ["Retail chain, Dubai", "Pharmacy group, Abu Dhabi", "Convenience chain, RAK"],
+  Contracting: ["Developer, JVC", "Hotel owner, Palm", "Main contractor, Dubai Hills"],
+  Property: ["Logistics tenant, Unit 9", "Tenant, Al Reem tower", "Retail tenant, Unit 3"],
 };
 const SUPPLIERS: Record<Entity["sector"], string[]> = {
-  Trading: ["Cement supplier · Fujairah", "Steel mill · Jebel Ali"],
-  Manufacturing: ["Steel coil supplier", "Resin importer · Jebel Ali"],
-  Distribution: ["Brand principal · regional", "Logistics provider · DIC"],
-  Contracting: ["MEP subcontractor · Dubai", "Cable supplier · Sharjah"],
-  Property: ["Facilities management", "Maintenance contractor · Dubai"],
+  Trading: ["Cement supplier, Fujairah", "Steel mill, Jebel Ali"],
+  Manufacturing: ["Steel coil supplier", "Resin importer, Jebel Ali"],
+  Distribution: ["Brand principal, regional", "Logistics provider, DIC"],
+  Contracting: ["MEP subcontractor, Dubai", "Cable supplier, Sharjah"],
+  Property: ["Facilities management", "Maintenance contractor, Dubai"],
 };
 
 /** Splits an overdue debtor balance into 2–3 invoices that sum exactly to it. */
@@ -98,8 +98,15 @@ const PATTERN: { kind: MovementKind; mult: number; day: number; time: string }[]
 ];
 
 /** Latest movements captured for a company (most recent first). */
+function shiftTime(hhmm: string, minutes: number): string {
+  const [h, m] = hhmm.split(":").map(Number);
+  const t = Math.max(0, (h ?? 0) * 60 + (m ?? 0) - minutes);
+  return `${String(Math.floor(t / 60)).padStart(2, "0")}:${String(t % 60).padStart(2, "0")}`;
+}
+
 export function latestMovements(entityId: EntityId): Movement[] {
   const e = getEntity(entityId);
+  const lag = ENTITIES.findIndex((x) => x.id === entityId) * 7;
   const ledger = e.ledgers[0] ?? "Tally";
   const cust = CUSTOMERS[e.sector];
   const sup = SUPPLIERS[e.sector];
@@ -113,7 +120,7 @@ export function latestMovements(entityId: EntityId): Movement[] {
       kind: p.kind,
       ref: `${prefix}-${PREFIX[entityId]}-${String(8800 + i * 7 + PREFIX[entityId].charCodeAt(0)).padStart(5, "0")}`,
       date: addDays(TODAY_ISO, p.day),
-      time: p.time,
+      time: shiftTime(p.time, lag),
       counterparty: (sale ? cust : sup)[i % (sale ? cust.length : sup.length)] ?? "",
       amount: Math.round((base * p.mult) / 10) * 10,
       source: ledger,

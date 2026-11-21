@@ -2,8 +2,8 @@
  * Visual + UX verification (CLAUDE.md Definition of Done).
  * Usage: BASE_URL=http://localhost:3000 node scripts/screens.mjs [outDir]
  * Captures Desktop 1440x900, iPad landscape 1180x820 and Mobile 390x844, clicks through every
- * interactive state of the iPad demo, and fails on console errors, hydration warnings or
- * horizontal page overflow.
+ * interactive state of the product demo, and fails on console errors, hydration warnings or
+ * horizontal overflow.
  */
 import { mkdirSync } from "node:fs";
 import { createRequire } from "node:module";
@@ -20,6 +20,7 @@ const VIEWPORTS = [
   { name: "ipad", width: 1180, height: 820 },
   { name: "mobile", width: 390, height: 844 },
 ];
+const CTA = /Book a 45-minute walkthrough/;
 
 const problems = [];
 const browser = await chromium.launch();
@@ -32,89 +33,79 @@ for (const vp of VIEWPORTS) {
   });
   page.on("pageerror", (e) => log.push(`pageerror: ${e.message}`));
 
-  const shot = async (name, opts = {}) => page.screenshot({ path: `${OUT}/${vp.name}-${name}.png`, ...opts });
   const pause = (ms = 450) => page.waitForTimeout(ms);
+  const overflow = async (label) => {
+    const o = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
+    if (o > 0) problems.push(`${vp.name}: horizontal overflow ${o}px ${label}`);
+  };
 
   await page.goto(BASE, { waitUntil: "networkidle" });
-  await pause(1600);
-  await shot("01-fold");
+  await pause(1200);
+  await page.screenshot({ path: `${OUT}/${vp.name}-01-fold.png` });
+  await overflow("on load");
 
-  const overflow = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
-  if (overflow > 0) problems.push(`${vp.name}: horizontal overflow ${overflow}px`);
+  // ---- Hero board: pause/play control ----
+  const board = page.locator("#top");
+  await board.getByRole("button", { name: /Pause|Play/ }).click();
+  await pause(300);
 
-  // ---- Hero iPad ----
-  const app = page.locator('[role="application"]').first();
-  await app.scrollIntoViewIfNeeded();
+  // ---- Product switcher ----
+  const product = page.locator("#product");
+  const frame = product.getByRole("tabpanel");
+  await product.scrollIntoViewIfNeeded();
   await pause();
-  await app.screenshot({ path: `${OUT}/${vp.name}-02-ipad-group.png` });
+  await frame.screenshot({ path: `${OUT}/${vp.name}-02-group.png` });
 
-  // Company tile → drawer (P&L), then Cash tab
-  await app.getByRole("button", { name: /Manufacturing Co\. B: cash/ }).click();
+  await frame.getByRole("button", { name: /Manufacturing Co\. B: cash/ }).click();
   await pause(600);
-  await app.screenshot({ path: `${OUT}/${vp.name}-03-ipad-drawer-pnl.png` });
-  await app.getByRole("tab", { name: /^Cash$/ }).click();
-  await pause(500);
-  await app.screenshot({ path: `${OUT}/${vp.name}-04-ipad-drawer-cash.png` });
-  await app.getByRole("tab", { name: /^Movements$/ }).click();
-  await pause(500);
-  await app.screenshot({ path: `${OUT}/${vp.name}-04b-ipad-drawer-movements.png` });
-  await app.getByRole("button", { name: "Close", exact: true }).click();
-  await pause(500);
+  await frame.screenshot({ path: `${OUT}/${vp.name}-03-drawer-pnl.png` });
+  for (const t of ["Cash", "Movements"]) {
+    await frame.getByRole("tab", { name: new RegExp(`^${t}$`) }).click();
+    await pause(400);
+    await frame.screenshot({ path: `${OUT}/${vp.name}-04-drawer-${t.toLowerCase()}.png` });
+  }
+  await frame.getByRole("button", { name: "Close", exact: true }).click();
+  await pause(400);
 
-  // Ask fibr: two presets + one free-text question
-  const tabsVisible = app.locator('[role="tablist"][aria-label="fibr sections"]:visible');
-  await tabsVisible.getByRole("tab", { name: "Ask fibr" }).click();
-  await pause(500);
-  await app.screenshot({ path: `${OUT}/${vp.name}-05-ipad-ask-empty.png` });
-  await app.getByRole("button", { name: /cash across all companies at the end of October/ }).click();
-  await pause(2200);
-  await app.screenshot({ path: `${OUT}/${vp.name}-06-ipad-ask-cash.png` });
-  await app.getByRole("button", { name: "Debtors over 90 days" }).click();
-  await pause(2200);
-  await app.screenshot({ path: `${OUT}/${vp.name}-07-ipad-ask-debtors.png` });
-  await app.getByLabel("Ask fibr a question").fill("Which company has the highest net margin?");
-  await app.getByRole("button", { name: "Send question" }).click();
-  await pause(2500);
-  await app.screenshot({ path: `${OUT}/${vp.name}-08-ipad-ask-live.png` });
-
-  // Facilities + select a week
-  await tabsVisible.getByRole("tab", { name: "Facilities" }).click();
-  await pause(1100);
-  await app.screenshot({ path: `${OUT}/${vp.name}-09-ipad-facilities.png` });
-
-  // ---- Product tour moments ----
-  const tour = page.locator("#tour");
-  const moments = tour.getByRole("tab");
-  const n = await moments.count();
-  for (let i = 0; i < n; i++) {
-    await moments.nth(i).click();
-    await pause(500);
-    if (i === 0 || i === 2 || i === 5 || vp.name === "ipad") {
-      await tour.screenshot({ path: `${OUT}/${vp.name}-10-tour-${i + 1}.png` });
-    }
+  const tabs = product.getByRole("tablist", { name: "Product views" });
+  for (const t of ["Trace", "Facilities", "Statements", "Exceptions", "Summary"]) {
+    await tabs.getByRole("tab", { name: t, exact: true }).click();
+    await pause(700);
+    await frame.screenshot({ path: `${OUT}/${vp.name}-05-${t.toLowerCase()}.png` });
   }
 
-  // ---- Roles ----
-  const roles = page.locator("#roles").getByRole("tab");
-  for (let i = 0; i < (await roles.count()); i++) {
-    await roles.nth(i).click();
-    await pause(400);
-    if (i === 0 || i === 1) await page.locator("#roles").screenshot({ path: `${OUT}/${vp.name}-11-roles-${i + 1}.png` });
+  await tabs.getByRole("tab", { name: "Ask", exact: true }).click();
+  await pause(500);
+  await frame.getByRole("button", { name: /cash across all companies at the end of October/ }).click();
+  await pause(2200);
+  await frame.screenshot({ path: `${OUT}/${vp.name}-06-ask-cash.png` });
+  await frame.getByLabel("Ask fibr a question").fill("Which company has the highest net margin?");
+  await frame.getByRole("button", { name: "Send question" }).click();
+  await pause(2500);
+  await frame.screenshot({ path: `${OUT}/${vp.name}-07-ask-live.png` });
+
+  // ---- Header Ask pill (desktop widths only) runs a real question ----
+  const pill = page.getByRole("button", { name: /Ask fibr: Who owes us more than 90 days/ });
+  if (await pill.isVisible()) {
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await pill.click();
+    await pause(2600);
+    await frame.screenshot({ path: `${OUT}/${vp.name}-08-pill-ask.png` });
   }
 
   // ---- Sections ----
-  for (const id of ["problem", "pipeline", "uae", "security", "pilot", "faq"]) {
+  for (const id of ["sources", "uae", "rollout"]) {
     await page.locator(`#${id}`).scrollIntoViewIfNeeded();
-    await pause(300);
-    await page.locator(id === "faq" ? "#faq >> xpath=ancestor::section" : `#${id}`).screenshot({ path: `${OUT}/${vp.name}-12-${id}.png` });
+    await pause(250);
+    await page.locator(`#${id}`).screenshot({ path: `${OUT}/${vp.name}-09-${id}.png` });
   }
 
   // ---- Booking form: errors, then success ----
   const book = page.locator("#book");
   await book.scrollIntoViewIfNeeded();
-  await book.getByRole("button", { name: /Book a 45-Minute Walkthrough/ }).click();
+  await book.getByRole("button", { name: CTA }).click();
   await pause(400);
-  await book.screenshot({ path: `${OUT}/${vp.name}-13-form-errors.png` });
+  await book.screenshot({ path: `${OUT}/${vp.name}-10-form-errors.png` });
   await book.getByLabel("Full name").fill("Test Owner");
   await book.getByLabel("Work email").fill("owner@example.com");
   await book.getByLabel("Group name").fill("Example Holding");
@@ -122,14 +113,12 @@ for (const vp of VIEWPORTS) {
   await book.getByLabel("Companies in the group").selectOption({ index: 2 });
   await book.locator('label:has(input[value="Tally"])').click();
   await book.locator('label:has(input[name="window"])').first().click();
-  await book.getByRole("button", { name: /Book a 45-Minute Walkthrough/ }).click();
+  await book.getByRole("button", { name: CTA }).click();
   await pause(1200);
-  await book.screenshot({ path: `${OUT}/${vp.name}-14-form-success.png` });
+  await book.screenshot({ path: `${OUT}/${vp.name}-11-form-success.png` });
 
-  await shot("00-full", { fullPage: true });
-
-  const overflow2 = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
-  if (overflow2 > 0) problems.push(`${vp.name}: horizontal overflow after interaction ${overflow2}px`);
+  await page.screenshot({ path: `${OUT}/${vp.name}-00-full.png`, fullPage: true });
+  await overflow("after interaction");
   for (const l of log) problems.push(`${vp.name}: ${l}`);
   await page.close();
 }

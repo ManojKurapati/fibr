@@ -1,6 +1,6 @@
 /**
  * Illustrative UAE holding group — NOT a real group.
- * All amounts in AED. P&L is Jan–Oct 2026 year-to-date; balances are at the 31 Oct 2026 close
+ * All amounts in AED. P&L is Jan to Oct 2026 year-to-date; balances are at the 31 Oct 2026 close
  * and at the latest pull (today). Totals are never hard-coded: see src/lib/aggregate.ts.
  */
 import { COMPANY_NAMES, type EntityId } from "./names";
@@ -9,7 +9,7 @@ import type { Entity, Facility } from "../lib/types";
 /** The date the demo treats as "today" (Friday). */
 export const TODAY_ISO = "2026-11-20";
 export const LAST_PULLED = "Today, 07:00 GST";
-export const PNL_PERIOD = "Jan–Oct 2026";
+export const PNL_PERIOD = "Jan to Oct 2026";
 export const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct"] as const;
 /** Monday of ladder week 1. */
 export const LADDER_START_ISO = "2026-11-23";
@@ -25,7 +25,7 @@ export const ENTITIES: Entity[] = [
     name: COMPANY_NAMES.tradA,
     sector: "Trading",
     activity: "Building-materials trading",
-    jurisdiction: "Dubai · Mainland",
+    jurisdiction: "Dubai, Mainland",
     freeZone: false,
     qfzp: false,
     ledgers: ["Tally"],
@@ -41,12 +41,12 @@ export const ENTITIES: Entity[] = [
       d31to60: 7_920_000,
       d61to90: 3_140_000,
       over90: [
-        { name: "Contractor · Al Barsha villas", amount: 1_260_000, daysOutstanding: 104 },
-        { name: "Retail fit-out customer · Deira", amount: 410_000, daysOutstanding: 133 },
+        { name: "Contractor, Al Barsha villas", amount: 1_260_000, daysOutstanding: 104 },
+        { name: "Retail fit-out customer, Deira", amount: 410_000, daysOutstanding: 133 },
       ],
     },
     payables: 14_880_000,
-    vat: { period: "Aug–Oct 2026", outputVat: 1_523_000, inputVat: 1_264_100, due: "2026-11-28" },
+    vat: { period: "Aug to Oct 2026", outputVat: 1_523_000, inputVat: 1_264_100, due: "2026-11-28" },
     docs: { avgSale: 18_500, avgPurchase: 42_000 },
   },
   {
@@ -54,7 +54,7 @@ export const ENTITIES: Entity[] = [
     name: COMPANY_NAMES.tradB,
     sector: "Trading",
     activity: "Electronics re-export",
-    jurisdiction: "Dubai · JAFZA (free zone)",
+    jurisdiction: "Dubai, JAFZA (free zone)",
     freeZone: true,
     qfzp: true,
     ledgers: ["Business Central"],
@@ -69,10 +69,10 @@ export const ENTITIES: Entity[] = [
       current: 11_280_000,
       d31to60: 4_610_000,
       d61to90: 1_920_000,
-      over90: [{ name: "Distributor · Nairobi re-export", amount: 780_000, daysOutstanding: 97 }],
+      over90: [{ name: "Distributor, Nairobi re-export", amount: 780_000, daysOutstanding: 97 }],
     },
     payables: 9_340_000,
-    vat: { period: "Aug–Oct 2026", outputVat: 212_000, inputVat: 498_600, due: "2026-11-28" },
+    vat: { period: "Aug to Oct 2026", outputVat: 212_000, inputVat: 498_600, due: "2026-11-28" },
     docs: { avgSale: 36_000, avgPurchase: 95_000 },
   },
   {
@@ -80,7 +80,7 @@ export const ENTITIES: Entity[] = [
     name: COMPANY_NAMES.mfgA,
     sector: "Manufacturing",
     activity: "Structural steel fabrication",
-    jurisdiction: "Sharjah · SAIF Zone (free zone)",
+    jurisdiction: "Sharjah, SAIF Zone (free zone)",
     freeZone: true,
     qfzp: true,
     ledgers: ["Business Central"],
@@ -96,12 +96,12 @@ export const ENTITIES: Entity[] = [
       d31to60: 6_210_000,
       d61to90: 2_480_000,
       over90: [
-        { name: "Main contractor · Business Bay tower", amount: 1_120_000, daysOutstanding: 112 },
-        { name: "Steel stockist · Ajman", amount: 365_000, daysOutstanding: 96 },
+        { name: "Main contractor, Business Bay tower", amount: 1_120_000, daysOutstanding: 112 },
+        { name: "Steel stockist, Ajman", amount: 365_000, daysOutstanding: 96 },
       ],
     },
     payables: 10_120_000,
-    vat: { period: "Aug–Oct 2026", outputVat: 1_104_000, inputVat: 865_300, due: "2026-11-28" },
+    vat: { period: "Aug to Oct 2026", outputVat: 1_104_000, inputVat: 865_300, due: "2026-11-28" },
     docs: { avgSale: 64_000, avgPurchase: 38_000 },
   },
   {
@@ -109,7 +109,7 @@ export const ENTITIES: Entity[] = [
     name: COMPANY_NAMES.mfgB,
     sector: "Manufacturing",
     activity: "Plastic packaging",
-    jurisdiction: "Ajman · Mainland",
+    jurisdiction: "Ajman, Mainland",
     freeZone: false,
     qfzp: false,
     ledgers: ["Tally"],
@@ -121,10 +121,10 @@ export const ENTITIES: Entity[] = [
       current: 5_120_000,
       d31to60: 2_240_000,
       d61to90: 890_000,
-      over90: [{ name: "FMCG brand owner · Sharjah", amount: 240_000, daysOutstanding: 101 }],
+      over90: [{ name: "FMCG brand owner, Sharjah", amount: 240_000, daysOutstanding: 101 }],
     },
     payables: 4_960_000,
-    vat: { period: "Sep–Nov 2026", outputVat: 472_000, inputVat: 391_500, due: "2026-12-28" },
+    vat: { period: "Sep to Nov 2026", outputVat: 472_000, inputVat: 391_500, due: "2026-12-28" },
     docs: { avgSale: 9_800, avgPurchase: 14_000 },
   },
   {
@@ -132,7 +132,7 @@ export const ENTITIES: Entity[] = [
     name: COMPANY_NAMES.distA,
     sector: "Distribution",
     activity: "FMCG distribution",
-    jurisdiction: "Dubai · Mainland",
+    jurisdiction: "Dubai, Mainland",
     freeZone: false,
     qfzp: false,
     ledgers: ["Business Central"],
@@ -148,20 +148,20 @@ export const ENTITIES: Entity[] = [
       d31to60: 11_430_000,
       d61to90: 4_120_000,
       over90: [
-        { name: "Retail chain · Dubai hypermarkets", amount: 1_840_000, daysOutstanding: 118 },
-        { name: "Convenience chain · Northern Emirates", amount: 520_000, daysOutstanding: 94 },
+        { name: "Retail chain, Dubai hypermarkets", amount: 1_840_000, daysOutstanding: 118 },
+        { name: "Convenience chain, Northern Emirates", amount: 520_000, daysOutstanding: 94 },
       ],
     },
     payables: 22_310_000,
-    vat: { period: "Aug–Oct 2026", outputVat: 2_275_000, inputVat: 1_902_400, due: "2026-11-28" },
+    vat: { period: "Aug to Oct 2026", outputVat: 2_275_000, inputVat: 1_902_400, due: "2026-11-28" },
     docs: { avgSale: 6_200, avgPurchase: 88_000 },
   },
   {
     id: "distB",
     name: COMPANY_NAMES.distB,
     sector: "Distribution",
-    activity: "Medical consumables · B2B + web store",
-    jurisdiction: "Abu Dhabi · Mainland",
+    activity: "Medical consumables, B2B + web store",
+    jurisdiction: "Abu Dhabi, Mainland",
     freeZone: false,
     qfzp: false,
     ledgers: ["Zoho Books", "Shopify"],
@@ -176,10 +176,10 @@ export const ENTITIES: Entity[] = [
       current: 4_980_000,
       d31to60: 1_870_000,
       d61to90: 610_000,
-      over90: [{ name: "Hospital group · Abu Dhabi", amount: 690_000, daysOutstanding: 126 }],
+      over90: [{ name: "Hospital group, Abu Dhabi", amount: 690_000, daysOutstanding: 126 }],
     },
     payables: 3_140_000,
-    vat: { period: "Sep–Nov 2026", outputVat: 412_000, inputVat: 298_700, due: "2026-12-28" },
+    vat: { period: "Sep to Nov 2026", outputVat: 412_000, inputVat: 298_700, due: "2026-12-28" },
     docs: { avgSale: 2_400, avgPurchase: 21_000, webShare: 0.22, avgWebOrder: 420 },
   },
   {
@@ -187,7 +187,7 @@ export const ENTITIES: Entity[] = [
     name: COMPANY_NAMES.contA,
     sector: "Contracting",
     activity: "MEP contracting",
-    jurisdiction: "Dubai · Mainland",
+    jurisdiction: "Dubai, Mainland",
     freeZone: false,
     qfzp: false,
     ledgers: ["Tally"],
@@ -203,13 +203,13 @@ export const ENTITIES: Entity[] = [
       d31to60: 8_940_000,
       d61to90: 4_380_000,
       over90: [
-        { name: "Main contractor · Dubai Hills retail", amount: 2_380_000, daysOutstanding: 142 },
-        { name: "Developer · JVC residential (retention)", amount: 1_650_000, daysOutstanding: 211 },
-        { name: "Hotel owner · Palm (variation claim)", amount: 640_000, daysOutstanding: 99 },
+        { name: "Main contractor, Dubai Hills retail", amount: 2_380_000, daysOutstanding: 142 },
+        { name: "Developer, JVC residential (retention)", amount: 1_650_000, daysOutstanding: 211 },
+        { name: "Hotel owner, Palm (variation claim)", amount: 640_000, daysOutstanding: 99 },
       ],
     },
     payables: 15_460_000,
-    vat: { period: "Aug–Oct 2026", outputVat: 1_302_000, inputVat: 1_118_600, due: "2026-11-28" },
+    vat: { period: "Aug to Oct 2026", outputVat: 1_302_000, inputVat: 1_118_600, due: "2026-11-28" },
     docs: { avgSale: 410_000, avgPurchase: 26_000 },
   },
   {
@@ -217,7 +217,7 @@ export const ENTITIES: Entity[] = [
     name: COMPANY_NAMES.contB,
     sector: "Contracting",
     activity: "Interior fit-out",
-    jurisdiction: "Dubai · Mainland",
+    jurisdiction: "Dubai, Mainland",
     freeZone: false,
     qfzp: false,
     ledgers: ["QuickBooks Online"],
@@ -229,10 +229,10 @@ export const ENTITIES: Entity[] = [
       current: 3_640_000,
       d31to60: 1_520_000,
       d61to90: 560_000,
-      over90: [{ name: "Office tenant · DIFC fit-out", amount: 310_000, daysOutstanding: 108 }],
+      over90: [{ name: "Office tenant, DIFC fit-out", amount: 310_000, daysOutstanding: 108 }],
     },
     payables: 2_470_000,
-    vat: { period: "Sep–Nov 2026", outputVat: 298_000, inputVat: 217_900, due: "2026-12-28" },
+    vat: { period: "Sep to Nov 2026", outputVat: 298_000, inputVat: 217_900, due: "2026-12-28" },
     docs: { avgSale: 85_000, avgPurchase: 12_500 },
   },
   {
@@ -240,7 +240,7 @@ export const ENTITIES: Entity[] = [
     name: COMPANY_NAMES.propA,
     sector: "Property",
     activity: "Warehouse leasing",
-    jurisdiction: "Dubai · Mainland",
+    jurisdiction: "Dubai, Mainland",
     freeZone: false,
     qfzp: false,
     ledgers: ["Zoho Books"],
@@ -255,10 +255,10 @@ export const ENTITIES: Entity[] = [
       current: 1_240_000,
       d31to60: 380_000,
       d61to90: 160_000,
-      over90: [{ name: "Logistics tenant · Unit 14", amount: 286_000, daysOutstanding: 121 }],
+      over90: [{ name: "Logistics tenant, Unit 14", amount: 286_000, daysOutstanding: 121 }],
     },
     payables: 1_120_000,
-    vat: { period: "Aug–Oct 2026", outputVat: 241_000, inputVat: 96_400, due: "2026-11-28" },
+    vat: { period: "Aug to Oct 2026", outputVat: 241_000, inputVat: 96_400, due: "2026-11-28" },
     docs: { avgSale: 46_000, avgPurchase: 8_500 },
   },
   {
@@ -266,7 +266,7 @@ export const ENTITIES: Entity[] = [
     name: COMPANY_NAMES.propB,
     sector: "Property",
     activity: "Residential portfolio",
-    jurisdiction: "Abu Dhabi · Mainland",
+    jurisdiction: "Abu Dhabi, Mainland",
     freeZone: false,
     qfzp: false,
     ledgers: ["QuickBooks Online"],
@@ -278,10 +278,10 @@ export const ENTITIES: Entity[] = [
       current: 640_000,
       d31to60: 220_000,
       d61to90: 95_000,
-      over90: [{ name: "Tenant · Al Reem tower", amount: 74_000, daysOutstanding: 135 }],
+      over90: [{ name: "Tenant, Al Reem tower", amount: 74_000, daysOutstanding: 135 }],
     },
     payables: 610_000,
-    vat: { period: "Aug–Oct 2026", outputVat: 18_400, inputVat: 9_200, due: "2026-11-28" },
+    vat: { period: "Aug to Oct 2026", outputVat: 18_400, inputVat: 9_200, due: "2026-11-28" },
     docs: { avgSale: 7_800, avgPurchase: 5_200 },
   },
 ];
@@ -329,7 +329,7 @@ export const EXCEPTION_FACTS = {
   singleDebtorThreshold: 1_500_000,
 } as const;
 
-/** Intercompany trading Jan–Oct 2026, eliminated on consolidation (no profit effect). */
+/** Intercompany trading Jan to Oct 2026, eliminated on consolidation (no profit effect). */
 export const INTERCOMPANY: { from: EntityId; to: EntityId; what: string; amount: number; buyerLine: "cogs" | "opex" }[] = [
   { from: "propA", to: "tradA", what: "Warehouse rent", amount: 2_400_000, buyerLine: "opex" },
   { from: "propA", to: "distA", what: "Warehouse rent", amount: 3_100_000, buyerLine: "opex" },

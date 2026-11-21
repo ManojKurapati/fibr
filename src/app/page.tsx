@@ -1,15 +1,12 @@
 import { SiteFooter } from "@/components/layout/SiteFooter";
 import { SiteHeader } from "@/components/layout/SiteHeader";
-import { CommercialFaq } from "@/components/sections/CommercialFaq";
-import { FinalCta } from "@/components/sections/FinalCta";
+import { BeforeAfter } from "@/components/sections/BeforeAfter";
+import { Close } from "@/components/sections/Close";
 import { Hero } from "@/components/sections/Hero";
-import { Pipeline } from "@/components/sections/Pipeline";
-import { PilotTimeline } from "@/components/sections/PilotTimeline";
-import { ProductTour } from "@/components/sections/ProductTour";
-import { RoleSwitcher } from "@/components/sections/RoleSwitcher";
-import { SecurityPillars } from "@/components/sections/SecurityPillars";
-import { StatusQuo } from "@/components/sections/StatusQuo";
-import { WhyNowUAE } from "@/components/sections/WhyNowUAE";
+import { Product } from "@/components/sections/Product";
+import { Rollout } from "@/components/sections/Rollout";
+import { Sources } from "@/components/sections/Sources";
+import { UaeRules } from "@/components/sections/UaeRules";
 
 export default function Home() {
   return (
@@ -17,15 +14,12 @@ export default function Home() {
       <SiteHeader />
       <main>
         <Hero />
-        <StatusQuo />
-        <Pipeline />
-        <ProductTour />
-        <RoleSwitcher />
-        <WhyNowUAE />
-        <SecurityPillars />
-        <PilotTimeline />
-        <CommercialFaq />
-        <FinalCta />
+        <BeforeAfter />
+        <Product />
+        <Sources />
+        <UaeRules />
+        <Rollout />
+        <Close />
       </main>
       <SiteFooter />
     </>

@@ -1,14 +1,11 @@
 "use client";
 
-import { motion } from "motion/react";
-import { ArrowRight, CheckCircle2, ChevronDown, Loader2 } from "lucide-react";
+import { Check, ChevronDown, Loader2 } from "lucide-react";
 import { useId, useState, type ReactNode } from "react";
-import { COMPANY_COUNTS, SOURCES, TIME_WINDOWS } from "@/data/content";
+import { COMPANY_COUNTS, PRIMARY_CTA, SOURCES, TIME_WINDOWS } from "@/data/content";
 import { BookingSchema, ROLE_LABELS, fieldErrors, type BookingErrors } from "@/lib/booking";
 import { BOOKING_EMAIL, STATIC_EXPORT } from "@/lib/runtime";
-import { PRIMARY_CTA } from "../ui/CtaButton";
 
-const ease = [0.22, 1, 0.36, 1] as const;
 const LEDGER_OPTIONS = [...SOURCES, "Other"] as const;
 
 export function BookingForm() {
@@ -68,31 +65,30 @@ export function BookingForm() {
   if (status === "done" || status === "mailto" || status === "preview") {
     const copy =
       status === "done"
-        ? { title: "Thank you. Your walkthrough request is in.", body: "We'll confirm your 45-minute walkthrough by email." }
+        ? { title: "Request received.", body: "We will confirm your 45-minute walkthrough by email." }
         : status === "mailto"
-          ? { title: "Almost there. Send the email to finish.", body: "Your email app has opened with your details filled in. Send it and we'll confirm your 45-minute walkthrough." }
-          : { title: "Thanks. This preview can't send requests yet.", body: "Online booking isn't connected on this preview site. Nothing was sent." };
+          ? { title: "Send the email to finish.", body: "Your email app has opened with your details filled in." }
+          : { title: "This preview cannot send requests yet.", body: "Online booking is not connected on this preview site. Nothing was sent." };
     return (
-      <motion.div
-        initial={{ opacity: 0, y: 8 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, ease }}
-        className="flex min-h-[28rem] flex-col items-start justify-center rounded-[24px] bg-surface p-8 text-ink sm:p-10"
-        role="status"
-      >
-        <CheckCircle2 className="size-10 text-emerald" aria-hidden />
-        <p className="mt-6 font-display text-[2.25rem] leading-[1.05] tracking-[-0.025em]">{copy.title}</p>
-        <p className="mt-3 max-w-[28rem] text-[1rem] leading-relaxed text-ink-muted">{copy.body}</p>
-      </motion.div>
+      <div role="status" className="flex min-h-[28rem] flex-col justify-center border-2 border-ink bg-paper-3 p-[var(--space-xl)]">
+        <span className="grid size-12 place-items-center bg-accent text-accent-ink" aria-hidden>
+          <Check className="size-6" strokeWidth={3} />
+        </span>
+        <p className="mt-[var(--space-lg)] text-title font-extrabold tracking-[-0.02em]">{copy.title}</p>
+        <p className="mt-[var(--space-xs)] text-muted">{copy.body}</p>
+      </div>
     );
   }
 
-  const field = "mt-1.5 block w-full rounded-[12px] border bg-white px-3.5 py-3 text-[0.9375rem] text-ink outline-none transition-[border-color,box-shadow] placeholder:text-ink-faint focus:border-ink focus:shadow-[0_0_0_3px_rgba(11,18,33,0.08)]";
-  const border = (k: keyof BookingErrors) => (errors[k] ? "border-amber" : "border-hairline-strong");
+  const field =
+    "mt-[var(--space-xs)] block min-h-12 w-full rounded-none border-2 bg-paper-3 px-[var(--space-md)] py-[var(--space-sm)] text-ink outline-none placeholder:text-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus";
+  const border = (k: keyof BookingErrors) => (errors[k] ? "border-error" : "border-ink");
+  const choice =
+    "block cursor-pointer border-2 border-ink bg-paper-3 px-[var(--space-md)] py-[var(--space-sm)] text-center text-sm font-medium transition-colors duration-[var(--dur-micro)] ease-[steps(1)] peer-checked:bg-ink peer-checked:text-paper-3 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-focus hover:bg-paper-2";
 
   return (
-    <form noValidate onSubmit={onSubmit} className="relative rounded-[24px] bg-surface p-6 text-ink shadow-[0_40px_80px_-40px_rgba(0,0,0,0.6)] sm:p-8" aria-describedby={`${uid}-note`}>
-      <div className="grid gap-4 sm:grid-cols-2">
+    <form noValidate onSubmit={onSubmit} className="relative" aria-describedby={`${uid}-note`}>
+      <div className="grid gap-[var(--space-lg)] sm:grid-cols-2">
         <Field id={`${uid}-name`} label="Full name" error={errors.name}>
           <input id={`${uid}-name`} name="name" autoComplete="name" className={`${field} ${border("name")}`} aria-invalid={!!errors.name} aria-describedby={errors.name ? `${uid}-name-err` : undefined} />
         </Field>
@@ -107,9 +103,9 @@ export function BookingForm() {
         </Field>
         <Field id={`${uid}-role`} label="Your role" error={errors.role}>
           <Chevron />
-          <select id={`${uid}-role`} name="role" defaultValue="" className={`${field} ${border("role")} appearance-none`} aria-invalid={!!errors.role} aria-describedby={errors.role ? `${uid}-role-err` : undefined}>
+          <select id={`${uid}-role`} name="role" defaultValue="" className={`${field} ${border("role")} appearance-none pr-[var(--space-2xl)]`} aria-invalid={!!errors.role} aria-describedby={errors.role ? `${uid}-role-err` : undefined}>
             <option value="" disabled>
-              Choose…
+              Choose
             </option>
             {ROLE_LABELS.map((r) => (
               <option key={r}>{r}</option>
@@ -118,9 +114,9 @@ export function BookingForm() {
         </Field>
         <Field id={`${uid}-companies`} label="Companies in the group" error={errors.companies}>
           <Chevron />
-          <select id={`${uid}-companies`} name="companies" defaultValue="" className={`${field} ${border("companies")} appearance-none`} aria-invalid={!!errors.companies} aria-describedby={errors.companies ? `${uid}-companies-err` : undefined}>
+          <select id={`${uid}-companies`} name="companies" defaultValue="" className={`${field} ${border("companies")} appearance-none pr-[var(--space-2xl)]`} aria-invalid={!!errors.companies} aria-describedby={errors.companies ? `${uid}-companies-err` : undefined}>
             <option value="" disabled>
-              Choose…
+              Choose
             </option>
             {COMPANY_COUNTS.map((c) => (
               <option key={c}>{c}</option>
@@ -129,39 +125,35 @@ export function BookingForm() {
         </Field>
       </div>
 
-      <fieldset className="mt-5" aria-describedby={errors.ledgers ? `${uid}-ledgers-err` : undefined}>
-        <legend className="text-[0.8125rem] font-semibold">Accounting systems in use</legend>
-        <div className="mt-2 flex flex-wrap gap-2" id={`${uid}-ledgers`} tabIndex={-1}>
+      <fieldset className="mt-[var(--space-xl)] min-w-0 border-0 p-0" aria-describedby={errors.ledgers ? `${uid}-ledgers-err` : undefined}>
+        <legend className="text-sm font-medium">Sources in use</legend>
+        <div className="mt-[var(--space-xs)] flex flex-wrap gap-[var(--space-xs)]" id={`${uid}-ledgers`} tabIndex={-1}>
           {LEDGER_OPTIONS.map((l) => (
-            <label key={l} className="cursor-pointer">
+            <label key={l}>
               <input type="checkbox" name="ledgers" value={l} className="peer sr-only" />
-              <span className="inline-flex items-center rounded-full border border-hairline-strong px-3.5 py-2 text-[0.8125rem] font-medium text-ink-muted transition-colors peer-checked:border-ink peer-checked:bg-ink peer-checked:text-canvas peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-emerald">
-                {l}
-              </span>
+              <span className={choice}>{l}</span>
             </label>
           ))}
         </div>
         {errors.ledgers ? (
-          <p id={`${uid}-ledgers-err`} className="mt-1.5 text-[0.8125rem] text-amber-ink">
+          <p id={`${uid}-ledgers-err`} className="mt-[var(--space-xs)] text-sm font-medium text-error">
             {errors.ledgers}
           </p>
         ) : null}
       </fieldset>
 
-      <fieldset className="mt-5" aria-describedby={errors.window ? `${uid}-window-err` : undefined}>
-        <legend className="text-[0.8125rem] font-semibold">Preferred time</legend>
-        <div className="mt-2 grid gap-2 sm:grid-cols-3" id={`${uid}-window`} tabIndex={-1}>
+      <fieldset className="mt-[var(--space-xl)] min-w-0 border-0 p-0" aria-describedby={errors.window ? `${uid}-window-err` : undefined}>
+        <legend className="text-sm font-medium">Preferred time</legend>
+        <div className="mt-[var(--space-xs)] grid gap-[var(--space-xs)] sm:grid-cols-3" id={`${uid}-window`} tabIndex={-1}>
           {TIME_WINDOWS.map((w) => (
-            <label key={w} className="cursor-pointer">
+            <label key={w}>
               <input type="radio" name="window" value={w} className="peer sr-only" />
-              <span className="block rounded-[12px] border border-hairline-strong px-3 py-2.5 text-center text-[0.8125rem] font-medium text-ink-muted transition-colors peer-checked:border-ink peer-checked:bg-ink peer-checked:text-canvas peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-emerald">
-                {w}
-              </span>
+              <span className={choice}>{w}</span>
             </label>
           ))}
         </div>
         {errors.window ? (
-          <p id={`${uid}-window-err`} className="mt-1.5 text-[0.8125rem] text-amber-ink">
+          <p id={`${uid}-window-err`} className="mt-[var(--space-xs)] text-sm font-medium text-error">
             {errors.window}
           </p>
         ) : null}
@@ -175,39 +167,30 @@ export function BookingForm() {
         </label>
       </div>
 
-      <button
-        type="submit"
-        disabled={status === "sending"}
-        className="group mt-7 inline-flex h-13 w-full items-center justify-center gap-2 rounded-full bg-ink px-6 py-3.5 text-[0.9375rem] font-semibold text-canvas transition-colors hover:bg-[#1a2336] disabled:opacity-60"
-      >
+      <button type="submit" disabled={status === "sending"} aria-busy={status === "sending"} className="btn btn--primary mt-[var(--space-xl)] w-full">
         {status === "sending" ? <Loader2 className="size-4 animate-spin" aria-hidden /> : null}
-        {status === "sending" ? "Sending…" : PRIMARY_CTA}
-        {status === "sending" ? null : <ArrowRight className="size-4 transition-transform group-hover:translate-x-0.5" aria-hidden />}
+        {status === "sending" ? "Sending" : PRIMARY_CTA}
       </button>
-      <p id={`${uid}-note`} className="mt-3 text-center text-[0.8125rem] text-ink-muted" role={status === "failed" ? "alert" : undefined}>
-        {status === "failed" ? (
-          <span className="text-amber-ink">Something went wrong sending your request. Please try again.</span>
-        ) : (
-          "45 minutes, on your group's real questions. No preparation needed."
-        )}
+      <p id={`${uid}-note`} className="mt-[var(--space-sm)] text-sm text-muted" role={status === "failed" ? "alert" : undefined}>
+        {status === "failed" ? <span className="font-medium text-error">The request did not send. Please try again.</span> : "No preparation needed."}
       </p>
     </form>
   );
 }
 
 function Chevron() {
-  return <ChevronDown aria-hidden className="pointer-events-none absolute bottom-3.5 right-3.5 size-4 text-ink-muted" />;
+  return <ChevronDown aria-hidden className="pointer-events-none absolute bottom-[14px] right-[var(--space-md)] size-4" />;
 }
 
 function Field({ id, label, error, children }: { id: string; label: string; error?: string; children: ReactNode }) {
   return (
     <div className="relative">
-      <label htmlFor={id} className="text-[0.8125rem] font-semibold">
+      <label htmlFor={id} className="text-sm font-medium">
         {label}
       </label>
       {children}
       {error ? (
-        <p id={`${id}-err`} className="mt-1.5 text-[0.8125rem] text-amber-ink">
+        <p id={`${id}-err`} className="mt-[var(--space-xs)] text-sm font-medium text-error">
           {error}
         </p>
       ) : null}

@@ -57,12 +57,12 @@ export const PRESETS: Preset[] = [
         figureLabel: "31 Oct 2026 close",
         rows: rows.slice(0, 6).map((s) => ({
           label: s.entity.name,
-          sub: `${s.entity.bankAccounts.length} account${s.entity.bankAccounts.length > 1 ? "s" : ""} · ${pct(s.cashOct / t.cashOct)} of group`,
+          sub: `${s.entity.bankAccounts.length} account${s.entity.bankAccounts.length > 1 ? "s" : ""}, ${pct(s.cashOct / t.cashOct)} of group`,
           value: aed(s.cashOct, { compact: true, dp: 2 }),
         })),
         moreNote: `+ ${rows.length - 6} more companies holding ${aed(rows.slice(6).reduce((a, s) => a + s.cashOct, 0), { compact: true, dp: 2 })}`,
         chart: {
-          title: "Cash by company · 31 Oct, AED",
+          title: "Cash by company at 31 Oct, AED",
           layout: "vertical",
           data: rows.map((s) => ({ name: shortName(s.entity.name), value: s.cashOct, highlight: "emerald" })),
         },
@@ -87,7 +87,7 @@ export const PRESETS: Preset[] = [
         figureLabel: "Over 90 days, group total",
         rows: debtors.slice(0, 6).map((d) => ({
           label: d.name,
-          sub: `${d.entityName} · ${d.daysOutstanding} days`,
+          sub: `${d.entityName}, ${d.daysOutstanding} days`,
           value: aed(d.amount, { compact: true, dp: 2 }),
           tone: d.amount >= 1_500_000 ? "amber" : undefined,
         })),
@@ -118,8 +118,8 @@ export const PRESETS: Preset[] = [
         figure: aed(total, { compact: true, dp: 2 }),
         figureLabel: `Weeks of ${dateShort(weeks[0]?.weekStart ?? "")} to ${dateShort(weeks[3]?.weekStart ?? "")}`,
         rows: m.slice(0, 7).map((x) => ({
-          label: `${x.entityName} · ${x.facility.type}`,
-          sub: `${x.facility.bank} · week of ${dateShort(x.weekStart)}`,
+          label: `${x.entityName}, ${x.facility.type}`,
+          sub: `${x.facility.bank}, week of ${dateShort(x.weekStart)}`,
           value: aed(x.amount, { compact: true, dp: 2 }),
           tone: weeks.find((w) => w.week === x.week)?.flagged ? "amber" : undefined,
         })),

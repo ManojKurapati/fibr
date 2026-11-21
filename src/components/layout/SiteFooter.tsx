@@ -1,44 +1,31 @@
-import { COMMERCIAL_LINE } from "@/data/content";
-import { Container } from "../ui/Container";
 import { Wordmark } from "../ui/Wordmark";
 
+/** Colophon block: the wordmark, one paragraph of facts, the page's links. */
 export function SiteFooter() {
   return (
-    <footer className="bg-obsidian pb-10 text-ink-inverse-muted">
-      <Container>
-        <div className="grid gap-10 border-t border-obsidian-hairline pt-12 md:grid-cols-12">
-          <div className="md:col-span-5">
-            <Wordmark tone="inverse" className="text-[2.25rem]" />
-            <p className="mt-4 max-w-[24rem] text-[0.9375rem] leading-relaxed">
-              Financial visibility for UAE holding groups. Every transaction, invoice and receipt, captured from every source, in one view of the group.
-            </p>
-          </div>
-          <div className="text-[0.875rem] md:col-span-3">
-            <p className="eyebrow text-ink-inverse">Product</p>
-            <ul className="mt-4 space-y-2.5">
-              <li><a className="hover:text-ink-inverse" href="#pipeline">The pipeline</a></li>
-              <li><a className="hover:text-ink-inverse" href="#tour">Six moments</a></li>
-              <li><a className="hover:text-ink-inverse" href="#security">Security</a></li>
-              <li><a className="hover:text-ink-inverse" href="#pilot">4-week pilot</a></li>
-              <li><a className="hover:text-ink-inverse" href="#faq">FAQ</a></li>
-            </ul>
-          </div>
-          <div className="text-[0.875rem] md:col-span-4">
-            <p className="eyebrow text-ink-inverse">Facts</p>
-            <ul className="mt-4 space-y-2.5">
-              <li>Hosted on Microsoft Azure UAE North (Dubai)</li>
-              <li>Read-only: Tally, Business Central, QuickBooks Online, Zoho Books, Shopify</li>
-              <li>{COMMERCIAL_LINE}</li>
-            </ul>
-          </div>
-        </div>
-        <div className="mt-12 flex flex-col gap-3 border-t border-obsidian-hairline pt-6 text-[0.8125rem] sm:flex-row sm:justify-between">
-          <p>
-            © <span className="num">2026</span> fibr
-          </p>
-          <p>Demo figures are illustrative and do not describe a real group.</p>
-        </div>
-      </Container>
+    <footer className="on-ink bg-ink py-[var(--space-3xl)] text-paper-3">
+      <div className="container grid gap-[var(--space-xl)] lg:grid-cols-12">
+        <Wordmark className="text-[2.5rem] lg:col-span-3" />
+        <p className="max-w-[60ch] text-paper-2 lg:col-span-6">
+          Financial visibility for UAE holding groups. Hosted on Microsoft Azure UAE North in Dubai. Read-only on Tally, Business Central,
+          QuickBooks Online, Zoho Books and Shopify. Demo figures are illustrative and describe no real group.
+        </p>
+        <nav aria-label="Footer" className="flex flex-col gap-[var(--space-xs)] lg:col-span-3 lg:items-end">
+          <a href="#product" className="underline-offset-4 hover:underline">
+            Product
+          </a>
+          <a href="#sources" className="underline-offset-4 hover:underline">
+            Security
+          </a>
+          <a href="#rollout" className="underline-offset-4 hover:underline">
+            Rollout
+          </a>
+          <a href="#book" className="underline-offset-4 hover:underline">
+            Book a walkthrough
+          </a>
+        </nav>
+        <p className="num text-sm text-paper-2 lg:col-span-12">© 2026 fibr</p>
+      </div>
     </footer>
   );
 }

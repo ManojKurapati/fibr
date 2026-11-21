@@ -1,5 +1,7 @@
 # fibr marketing website: architecture blueprint
 
+> **Design update (latest):** the page was redesigned with Hallmark (theme Wayfind): Chivo Mono throughout, no device bezel, 8 sections (hero board, before/after, product switcher, sources and security, UAE rules, 4-week route, booking, footer). CLAUDE.md is the source of truth; the component tree below is historical.
+
 > **Positioning update (supersedes iPad-led copy below):** the pitch is financial visibility: every source captured, a data pipeline for every transaction, invoice and receipt, every number traceable to source. CTA is "Book a 45-Minute Walkthrough". Tour moment 06 is "Trace to source". A Pipeline section sits between the problem and the tour. See CLAUDE.md → Vocabulary.
 
 ## Context

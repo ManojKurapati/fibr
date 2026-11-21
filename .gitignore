@@ -42,3 +42,6 @@ next-env.d.ts
 
 /screenshots
 !.env.example
+
+# Hallmark working files (screenshots, records)
+/.hallmark/

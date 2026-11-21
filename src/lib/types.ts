@@ -29,7 +29,7 @@ export interface Debtor {
 }
 
 export interface PnlYtd {
-  /** Jan–Oct 2026 (10 months), AED. */
+  /** Jan to Oct 2026 (10 months), AED. */
   revenue: number;
   cogs: number;
   opex: number;

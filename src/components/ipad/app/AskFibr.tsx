@@ -16,7 +16,7 @@ type Msg =
 const ease = [0.22, 1, 0.36, 1] as const;
 const FALLBACK = "Live answers are paused in this demo right now. Try one of the preset questions below. They run on the same ledger data.";
 
-export function AskFibr() {
+export function AskFibr({ autoPreset }: { autoPreset?: string } = {}) {
   const [msgs, setMsgs] = useState<Msg[]>([]);
   const [input, setInput] = useState("");
   const [busy, setBusy] = useState(false);
@@ -25,6 +25,13 @@ export function AskFibr() {
   const timers = useRef<number[]>([]);
 
   useEffect(() => () => timers.current.forEach((t) => window.clearTimeout(t)), []);
+
+  useEffect(() => {
+    const p = autoPreset ? PRESETS.find((x) => x.id === autoPreset) : undefined;
+    if (p) askPreset(p);
+    // Run once per mount: the parent remounts this view for each new request.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     const el = threadRef.current;
@@ -123,7 +130,7 @@ export function AskFibr() {
         <div className="mb-2 flex flex-wrap items-end justify-between gap-x-3 gap-y-1.5">
           <div>
             <h2 className="font-display text-[24px] leading-none tracking-[-0.02em] @min-[54rem]:text-[28px]">Ask fibr</h2>
-            <p className="mt-1 hidden text-[11px] text-ink-muted @min-[40rem]:block">Plain-English questions, answered from every company&apos;s ledgers</p>
+            <p className="mt-1 hidden text-[12px] text-ink-muted @min-[40rem]:block">Plain-English questions, answered from every company&apos;s ledgers</p>
           </div>
           <SourceBadge />
         </div>
@@ -132,20 +139,20 @@ export function AskFibr() {
       <div ref={threadRef} className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-3 @min-[54rem]:px-5">
         {empty ? (
           <div className="mx-auto flex h-full max-w-[640px] flex-col justify-center py-4">
-            <span className="mx-auto grid size-10 place-items-center rounded-[12px] bg-ink text-canvas" aria-hidden>
+            <span className="mx-auto grid grid-cols-1 size-10 place-items-center rounded-none bg-ink text-canvas" aria-hidden>
               <Sparkles className="size-4" />
             </span>
             <p className="mt-3 text-center font-display text-[22px] leading-tight tracking-[-0.02em] @min-[54rem]:text-[26px]">
               Ask the whole group a question.
             </p>
-            <p className="mt-1 text-center text-[11.5px] text-ink-muted">Every answer shows its working and where the numbers came from.</p>
-            <div className="mt-4 grid gap-2 @min-[40rem]:grid-cols-2">
+            <p className="mt-1 text-center text-[12px] text-ink-muted">Every answer shows its working and where the numbers came from.</p>
+            <div className="mt-4 grid grid-cols-1 gap-2 @min-[40rem]:grid-cols-2">
               {PRESETS.map((p) => (
                 <button
                   key={p.id}
                   type="button"
                   onClick={() => askPreset(p)}
-                  className="rounded-[14px] border border-hairline bg-white px-3.5 py-3 text-left text-[12px] font-medium leading-snug text-ink transition-[border-color,box-shadow,transform] hover:border-hairline-strong hover:shadow-[0_6px_18px_-12px_rgba(11,18,33,0.4)] active:scale-[0.99]"
+                  className="rounded-none border border-hairline bg-paper-3 px-3.5 py-3 text-left text-[12px] font-medium leading-snug text-ink transition-[border-color,box-shadow,transform] hover:border-hairline-strong active:scale-[0.99]"
                 >
                   {p.question}
                 </button>
@@ -157,11 +164,11 @@ export function AskFibr() {
             {msgs.map((m) =>
               m.role === "user" ? (
                 <motion.div key={m.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2, ease }} className="flex justify-end">
-                  <p className="max-w-[80%] rounded-[16px] rounded-br-[6px] bg-ink px-3.5 py-2 text-[12px] leading-snug text-canvas">{m.text}</p>
+                  <p className="max-w-[80%] rounded-none bg-ink px-3.5 py-2 text-[12px] leading-snug text-canvas">{m.text}</p>
                 </motion.div>
               ) : (
                 <motion.div key={m.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.22, ease }} className="flex gap-2">
-                  <span className="mt-0.5 grid size-6 shrink-0 place-items-center rounded-[8px] bg-ink text-canvas" aria-hidden>
+                  <span className="mt-0.5 grid grid-cols-1 size-6 shrink-0 place-items-center rounded-none bg-ink text-canvas" aria-hidden>
                     <Sparkles className="size-3" />
                   </span>
                   <div className="min-w-0 flex-1" aria-live="polite">
@@ -192,7 +199,7 @@ export function AskFibr() {
                 type="button"
                 disabled={busy}
                 onClick={() => askPreset(p)}
-                className="shrink-0 rounded-full border border-hairline bg-white px-3 py-1.5 text-[11px] font-medium text-ink-muted transition-colors hover:text-ink disabled:opacity-50"
+                className="shrink-0 rounded-full border border-hairline bg-paper-3 px-3 py-1.5 text-[12px] font-medium text-ink-muted transition-colors hover:text-ink disabled:opacity-50"
               >
                 {p.short}
               </button>
@@ -200,7 +207,7 @@ export function AskFibr() {
           </div>
         ) : null}
         <form
-          className="mx-auto flex max-w-[760px] items-center gap-2 rounded-full border border-hairline bg-white py-1 pl-4 pr-1 shadow-[0_1px_2px_rgba(11,18,33,0.05)] focus-within:border-hairline-strong"
+          className="mx-auto flex max-w-[760px] items-center gap-2 rounded-full border border-hairline bg-paper-3 py-1 pl-4 pr-1 focus-within:border-hairline-strong"
           onSubmit={(e) => {
             e.preventDefault();
             void askLive(input);
@@ -215,20 +222,20 @@ export function AskFibr() {
             onChange={(e) => setInput(e.target.value)}
             maxLength={500}
             placeholder="Ask about cash, debtors, facilities, VAT…"
-            className="min-w-0 flex-1 bg-transparent text-[12.5px] text-ink outline-none placeholder:text-ink-faint"
+            className="min-w-0 flex-1 bg-transparent text-[13px] text-ink outline-none placeholder:text-ink-faint"
             autoComplete="off"
           />
           <button
             type="submit"
             disabled={busy || !input.trim()}
             aria-label="Send question"
-            className="grid size-8 shrink-0 place-items-center rounded-full bg-ink text-canvas transition-opacity disabled:opacity-30"
+            className="grid grid-cols-1 size-8 shrink-0 place-items-center rounded-full bg-ink text-canvas transition-opacity disabled:opacity-30"
           >
             <ArrowUp className="size-4" aria-hidden />
           </button>
         </form>
-        <p className="mx-auto mt-1.5 max-w-[760px] text-center text-[9.5px] text-ink-faint">
-          <span className="@min-[40rem]:hidden">AI · illustrative data · read-only</span>
+        <p className="mx-auto mt-1.5 max-w-[760px] text-center text-[11px] text-ink-faint">
+          <span className="@min-[40rem]:hidden">AI answers, illustrative data</span>
           <span className="hidden @min-[40rem]:inline">AI answers from illustrative data. Not a real group. Read-only: fibr never writes to your ledgers.</span>
         </p>
       </div>
@@ -238,15 +245,15 @@ export function AskFibr() {
 
 function Thinking({ steps, step }: { steps: string[]; step: number }) {
   return (
-    <div className="rounded-[14px] border border-hairline bg-white px-3.5 py-3">
+    <div className="rounded-none border border-hairline bg-paper-3 px-3.5 py-3">
       <ul className="space-y-1.5">
         {steps.map((s, i) => {
           const done = i < step;
           const active = i === step;
           return (
-            <li key={s} className={`flex items-center gap-2 text-[11.5px] transition-colors ${done ? "text-ink" : active ? "text-ink-muted" : "text-ink-faint/60"}`}>
-              <span className={`grid size-3.5 place-items-center rounded-full ${done ? "bg-emerald text-white" : "border border-hairline-strong"}`}>
-                {done ? <Check className="size-2.5" strokeWidth={3} aria-hidden /> : active ? <span className="size-1 animate-pulse rounded-full bg-ink-muted" /> : null}
+            <li key={s} className={`flex items-center gap-2 text-[12px] transition-colors ${done ? "text-ink" : active ? "text-ink-muted" : "text-ink-faint/60"}`}>
+              <span className={`grid size-3.5 place-items-center rounded-full ${done ? "bg-emerald text-accent-ink" : "border border-hairline-strong"}`}>
+                {done ? <Check className="size-2.5" strokeWidth={3} aria-hidden /> : active ? <span className="size-1.5 bg-ink-muted" /> : null}
               </span>
               {s}
             </li>
@@ -263,31 +270,31 @@ function PresetAnswerCard({ answer }: { answer: PresetAnswer }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.25 }}
-      className="overflow-hidden rounded-[14px] border border-hairline bg-white"
+      className="overflow-hidden rounded-none border border-hairline bg-paper-3"
     >
-      <div className="grid gap-0 @min-[54rem]:grid-cols-[1fr_1.05fr]">
+      <div className="grid grid-cols-1 gap-0 @min-[54rem]:grid-cols-[minmax(0,1fr)_1.05fr]">
         <div className="p-3.5">
-          <p className="text-[10.5px] font-medium text-ink-muted">{answer.figureLabel}</p>
-          <p className="num mt-0.5 text-[26px] font-semibold leading-none tracking-[-0.035em]">{answer.figure}</p>
-          <p className="mt-2 text-[11.5px] leading-snug text-ink-muted">{answer.lead}</p>
+          <p className="text-[11px] font-medium text-ink-muted">{answer.figureLabel}</p>
+          <p className="num mt-0.5 text-[26px] font-extrabold leading-none tracking-[-0.035em]">{answer.figure}</p>
+          <p className="mt-2 text-[12px] leading-snug text-ink-muted">{answer.lead}</p>
           <ol className="mt-2.5">
             {answer.rows.map((r, i) => (
               <li key={`${r.label}-${i}`} className="flex items-baseline justify-between gap-3 border-t border-hairline py-1.5">
                 <span className="min-w-0">
-                  <span className="flex items-baseline gap-1.5 text-[11.5px] font-medium">
-                    <span className="num w-3.5 shrink-0 text-[10px] text-ink-faint">{i + 1}</span>
+                  <span className="flex items-baseline gap-1.5 text-[12px] font-medium">
+                    <span className="num w-3.5 shrink-0 text-[11px] text-ink-faint">{i + 1}</span>
                     <span className="truncate">{r.label}</span>
                   </span>
-                  {r.sub ? <span className="block truncate pl-5 text-[10px] text-ink-faint">{r.sub}</span> : null}
+                  {r.sub ? <span className="block truncate pl-5 text-[11px] text-ink-faint">{r.sub}</span> : null}
                 </span>
-                <span className={`num shrink-0 text-[11.5px] font-semibold ${r.tone === "amber" ? "text-amber-ink" : ""}`}>{r.value}</span>
+                <span className={`num shrink-0 text-[12px] font-extrabold ${r.tone === "amber" ? "text-amber-ink" : ""}`}>{r.value}</span>
               </li>
             ))}
           </ol>
-          {answer.moreNote ? <p className="num border-t border-hairline pt-1.5 text-[10px] text-ink-faint">{answer.moreNote}</p> : null}
+          {answer.moreNote ? <p className="num border-t border-hairline pt-1.5 text-[11px] text-ink-faint">{answer.moreNote}</p> : null}
         </div>
-        <div className="border-t border-hairline bg-[#fbfaf8] p-3.5 @min-[54rem]:border-l @min-[54rem]:border-t-0">
-          <p className="mb-1.5 text-[10.5px] font-semibold">{answer.chart.title}</p>
+        <div className="border-t border-hairline bg-paper p-3.5 @min-[54rem]:border-l @min-[54rem]:border-t-0">
+          <p className="mb-1.5 text-[11px] font-extrabold">{answer.chart.title}</p>
           <AnswerBars
             data={answer.chart.data}
             layout={answer.chart.layout}
@@ -297,7 +304,7 @@ function PresetAnswerCard({ answer }: { answer: PresetAnswer }) {
         </div>
       </div>
       <div className="flex flex-wrap items-center justify-between gap-2 border-t border-hairline px-3.5 py-2">
-        <p className="text-[10.5px] text-ink-muted">{answer.footnote}</p>
+        <p className="text-[11px] text-ink-muted">{answer.footnote}</p>
         <SourceBadge />
       </div>
     </motion.div>
@@ -308,9 +315,9 @@ function PresetAnswerCard({ answer }: { answer: PresetAnswer }) {
 function LiveAnswer({ text, streaming, demo }: { text: string; streaming: boolean; demo?: boolean }) {
   const blocks = text.split(/\n{2,}/).filter(Boolean);
   return (
-    <div className="rounded-[14px] border border-hairline bg-white px-3.5 py-3 text-[12px] leading-relaxed text-ink">
-      {demo ? <span className="mb-1.5 inline-block rounded-full bg-[#ecebe6] px-2 py-0.5 text-[9.5px] font-semibold uppercase tracking-[0.08em] text-ink-muted">Demo mode</span> : null}
-      {blocks.length === 0 && streaming ? <span className="inline-block h-3.5 w-1.5 animate-pulse bg-ink-muted align-middle" /> : null}
+    <div className="rounded-none border border-hairline bg-paper-3 px-3.5 py-3 text-[12px] leading-relaxed text-ink">
+      {demo ? <span className="mb-1.5 inline-block rounded-full bg-paper-2 px-2 py-0.5 text-[11px] font-extrabold text-ink-muted">Demo mode</span> : null}
+      {blocks.length === 0 && streaming ? <span className="inline-block h-3.5 w-1.5 bg-ink-muted align-middle" /> : null}
       {blocks.map((b, i) => {
           const lines = b.split("\n");
           const bullets = lines.every((l) => /^\s*[-•*]\s+/.test(l));
@@ -356,7 +363,7 @@ function inline(s: string): ReactNode[] {
         <Fragment key={j}>{seg}</Fragment>
       ),
     );
-    out.push(bold ? <strong key={i} className="font-semibold">{nodes}</strong> : <Fragment key={i}>{nodes}</Fragment>);
+    out.push(bold ? <strong key={i} className="font-extrabold">{nodes}</strong> : <Fragment key={i}>{nodes}</Fragment>);
   });
   return out;
 }
