@@ -5,6 +5,7 @@ import { ArrowRight, CheckCircle2, ChevronDown, Loader2 } from "lucide-react";
 import { useId, useState, type ReactNode } from "react";
 import { COMPANY_COUNTS, SOURCES, TIME_WINDOWS } from "@/data/content";
 import { BookingSchema, ROLE_LABELS, fieldErrors, type BookingErrors } from "@/lib/booking";
+import { BOOKING_EMAIL, STATIC_EXPORT } from "@/lib/runtime";
 import { PRIMARY_CTA } from "../ui/CtaButton";
 
 const ease = [0.22, 1, 0.36, 1] as const;
@@ -13,7 +14,7 @@ const LEDGER_OPTIONS = [...SOURCES, "Other"] as const;
 export function BookingForm() {
   const uid = useId();
   const [errors, setErrors] = useState<BookingErrors>({});
-  const [status, setStatus] = useState<"idle" | "sending" | "done" | "failed">("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "done" | "failed" | "mailto" | "preview">("idle");
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -38,6 +39,18 @@ export function BookingForm() {
       return;
     }
     setErrors({});
+    if (STATIC_EXPORT) {
+      // Static (GitHub Pages) build: no server to receive the request.
+      if (BOOKING_EMAIL) {
+        const b = parsed.data;
+        const body = [`Name: ${b.name}`, `Email: ${b.email}`, `Phone: ${b.phone || "-"}`, `Role: ${b.role}`, `Group: ${b.group}`, `Companies: ${b.companies}`, `Sources: ${b.ledgers.join(", ")}`, `Preferred time: ${b.window}`].join("\n");
+        window.location.href = `mailto:${BOOKING_EMAIL}?subject=${encodeURIComponent("fibr walkthrough request")}&body=${encodeURIComponent(body)}`;
+        setStatus("mailto");
+      } else {
+        setStatus("preview");
+      }
+      return;
+    }
     setStatus("sending");
     try {
       const res = await fetch("/api/walkthrough", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(parsed.data) });
@@ -52,7 +65,13 @@ export function BookingForm() {
     }
   }
 
-  if (status === "done") {
+  if (status === "done" || status === "mailto" || status === "preview") {
+    const copy =
+      status === "done"
+        ? { title: "Thank you. Your walkthrough request is in.", body: "We'll confirm your 45-minute walkthrough by email." }
+        : status === "mailto"
+          ? { title: "Almost there. Send the email to finish.", body: "Your email app has opened with your details filled in. Send it and we'll confirm your 45-minute walkthrough." }
+          : { title: "Thanks. This preview can't send requests yet.", body: "Online booking isn't connected on this preview site. Nothing was sent." };
     return (
       <motion.div
         initial={{ opacity: 0, y: 8 }}
@@ -62,10 +81,8 @@ export function BookingForm() {
         role="status"
       >
         <CheckCircle2 className="size-10 text-emerald" aria-hidden />
-        <p className="mt-6 font-display text-[2.25rem] leading-[1.05] tracking-[-0.025em]">Thank you. Your walkthrough request is in.</p>
-        <p className="mt-3 max-w-[28rem] text-[1rem] leading-relaxed text-ink-muted">
-          We&apos;ll confirm your 45-minute walkthrough by email.
-        </p>
+        <p className="mt-6 font-display text-[2.25rem] leading-[1.05] tracking-[-0.025em]">{copy.title}</p>
+        <p className="mt-3 max-w-[28rem] text-[1rem] leading-relaxed text-ink-muted">{copy.body}</p>
       </motion.div>
     );
   }

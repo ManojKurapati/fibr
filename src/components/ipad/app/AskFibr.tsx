@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { ArrowUp, Check, Sparkles } from "lucide-react";
 import { Fragment, useEffect, useRef, useState, type ReactNode } from "react";
 import { PRESETS, type Preset, type PresetAnswer } from "@/lib/ask/presets";
+import { STATIC_EXPORT } from "@/lib/runtime";
 import { SourceBadge } from "../SourceBadge";
 import { AnswerBars } from "./charts";
 
@@ -78,6 +79,14 @@ export function AskFibr() {
 
     const set = (text: string, done: boolean, demo = false) =>
       setMsgs((m) => m.map((x) => (x.id === answerId && x.role === "assistant" && x.kind === "text" ? { ...x, text, status: done ? "done" : "streaming", demo } : x)));
+
+    if (STATIC_EXPORT) {
+      window.setTimeout(() => {
+        set(FALLBACK, true, true);
+        setBusy(false);
+      }, 500);
+      return;
+    }
 
     try {
       const res = await fetch("/api/ask", {

@@ -31,3 +31,11 @@ BASE_URL=http://localhost:3000 npm run screens   # writes ./screenshots (git-ign
 - `src/app/api/walkthrough`: booking stub (validates and logs a redacted summary; TODO: forward to email/CRM)
 
 See `.env.example` for configuration.
+
+## GitHub Pages
+
+`.github/workflows/pages.yml` deploys a static export on every push to `main` (or by running the workflow manually). Pages is static hosting, so the workflow removes the two API routes and the site runs in demo mode:
+- **Ask fibr:** preset questions work; free-text questions show "Demo mode".
+- **Booking form:** opens a pre-filled email if the repository variable `BOOKING_EMAIL` is set; otherwise it says the preview can't send requests.
+
+For live answers and real bookings, deploy to a Node host (e.g. Vercel) instead.
