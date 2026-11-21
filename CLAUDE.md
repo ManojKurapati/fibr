@@ -22,15 +22,15 @@
 | Last pulled | When sources were last read (e.g. "Today, 07:00 GST") | "real-time", "instant" |
 | Read-only | fibr never writes to a source | "secure sync" |
 
-## Design System: Hallmark "Wayfind" (supersedes the earlier serif/alabaster system)
-Built with the Hallmark skill (theme Wayfind, genre modern-minimal). Tokens live in `src/app/tokens.css`; Floor rules in `src/app/base.css`; the stamp and waivers sit at the top of `src/app/globals.css`.
-- **Type:** Chivo Mono everywhere (400 body, 500 labels, 800 heads, buttons and figures), `tabular-nums` on every figure, date and timestamp. No proportional face. Banned: Inter, Roboto, Arial, Space Grotesk.
-- **Colour (tokens only, OKLCH):** cool grey paper `--color-paper`, blue-black `--color-ink`, `--color-accent` cobalt for what is live and the primary action, `--color-accent-2` amber for figures on ink (never amber text on paper). Two ink bands a page at most (the hero board and the UAE rules); the footer is ink too.
-- **Surfaces:** square corners, 2px ink borders, no soft card shadows, no gradients, no glass, no device bezels. The product is shown unframed in a 2px ink frame.
-- **Never:** eyebrows or any small uppercase tracked label; an italic word inside a heading; middle-dot meta strings; decorative status dots; en or em dashes in copy; invented metrics, logos or quotes.
+## Design System: Claymorphism (supersedes Wayfind)
+Soft clay on a light pastel page. Tokens live in `src/app/tokens.css`; Floor rules in `src/app/base.css`; the clay utilities, button styles, stamp and waivers sit in `src/app/globals.css`.
+- **Type:** Nunito (rounded sans) for all words, 400 body, 800 heads and buttons. Chivo Mono only for figures, dates, timestamps and references (the `num` utility), always `tabular-nums`. Banned: Inter, Roboto, Arial, Space Grotesk.
+- **Colour (tokens only, OKLCH):** pale blue-grey `--color-paper`, clay surfaces `--color-paper-3`, deep ink `--color-ink` for text, `--color-accent` blue for the primary action and the selected state. Pastels with a role: `--color-mint` / `--color-mint-ink` for cash and what is fine, `--color-peach` / `--color-peach-ink` for what is flagged, `--color-sky` for supporting cards. No dark bands; no gradients.
+- **Clay recipe (one recipe, three states):** `clay` (radius 28px, `--shadow-card`: offset dark shadow, offset white highlight, inner highlight and inner shade), `clay-sm` (radius 18px, smaller shadows) and `clay-pressed` (inset shadows, for fields, rails and selected things). Buttons and chips are clay pills that sink when pressed. Never a clay surface inside another of the same size; no glass, no blur, no glow.
+- **Never:** eyebrows or any small uppercase tracked label; an italic word inside a heading; middle-dot meta strings; decorative status dots; en or em dashes in copy; invented metrics, logos or quotes; device bezels.
 - **Budget:** about 80 words per screen, 450 visible marketing words a page, 6 to 9 sections; hero is the headline (7 words or fewer), one sentence (12 words or fewer) and its actions.
-- **Motion:** departure-board stiff: colour changes in `steps(1)`; the hero board rolls a row in every few seconds, can be paused, and is still under reduced motion. No scroll reveals.
-- **Centerpiece:** the hero's board of captured movements (amber AED figures on ink), then the product switcher (Group, Trace, Ask, Facilities, Statements, Exceptions, Summary).
+- **Motion:** soft and brief: buttons lift 1px on hover and sink on press; the hero board rolls a row in every few seconds with one soft highlight, can be paused, and is still under reduced motion. No scroll reveals, no bounce.
+- **Centerpiece:** the hero's clay board of captured movements (money in mint, money out peach), then the product switcher (Group, Trace, Ask, Facilities, Statements, Exceptions, Summary) in a clay frame.
 
 ## Engineering & Verification Rules
 - Stack: Next.js (App Router) + TypeScript + Tailwind CSS v4 + Lucide React + Recharts.

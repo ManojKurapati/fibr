@@ -6,7 +6,7 @@ import type { LedgerSource } from "@/lib/types";
 export function SourceBadge({ sources, className = "" }: { sources?: readonly LedgerSource[]; className?: string }) {
   return (
     <span
-      className={`inline-flex max-w-full items-center gap-1.5 border border-ink bg-paper-3 px-2.5 py-1 text-[11px] font-medium leading-none text-ink-muted ${className}`}
+      className={`inline-flex max-w-full items-center gap-1.5 clay-sm px-2.5 py-1 text-[11px] font-medium leading-none text-ink-muted ${className}`}
     >
       <Clock className="size-3 shrink-0" aria-hidden />
       <span className="truncate">

@@ -26,7 +26,7 @@ export function GroupView({ onOpenEntity }: { onOpenEntity: (id: EntityId) => vo
     <div className="h-full overflow-y-auto overscroll-contain px-4 pb-5 pt-1 @min-[54rem]:px-5">
       <ViewHeader title="Group overview" subtitle={`All ${tiles.length} companies, AED`} />
 
-      <div className="mb-2.5 flex flex-wrap items-center gap-x-4 gap-y-1 rounded-none border border-hairline bg-paper-3 px-3 py-2 text-[11px] text-ink-muted">
+      <div className="mb-2.5 flex flex-wrap items-center gap-x-4 gap-y-1 clay-sm px-3 py-2 text-[11px] text-ink-muted">
         <span className="font-extrabold text-ink">Pipeline</span>
         <span>
           <span className="num text-ink">{sources}</span> sources, <span className="num text-ink">{tiles.length}</span> companies
@@ -45,7 +45,7 @@ export function GroupView({ onOpenEntity }: { onOpenEntity: (id: EntityId) => vo
       {/* KPI strip */}
       <div className="grid grid-cols-2 gap-2 @min-[54rem]:grid-cols-4 @min-[54rem]:gap-2.5">
         {kpis.map((k) => (
-          <div key={k.label} className="rounded-none border border-hairline bg-paper-3 px-3 py-2.5 @min-[54rem]:px-3.5 @min-[54rem]:py-3">
+          <div key={k.label} className="clay-sm px-3 py-2.5 @min-[54rem]:px-3.5 @min-[54rem]:py-3">
             <p className="flex items-center gap-1.5 text-[11px] font-medium text-ink-muted">
               {k.label}
             </p>
@@ -69,7 +69,7 @@ export function GroupView({ onOpenEntity }: { onOpenEntity: (id: EntityId) => vo
             <button
               type="button"
               onClick={() => onOpenEntity(t.entity.id)}
-              className="group relative flex w-full flex-col rounded-none border border-hairline bg-paper-3 p-3 pr-4 text-left transition-[box-shadow,transform,border-color] duration-200 hover:border-hairline-strong active:scale-[0.985]"
+              className="group relative flex w-full flex-col clay-sm p-3 pr-4 text-left transition-[box-shadow,transform,border-color] duration-200 hover:border-hairline-strong active:scale-[0.985]"
               aria-label={`${t.entity.name}: cash ${aed(t.cashToday, { compact: true, dp: 2 })}. Open details`}
             >
               <span className="flex h-4 items-center justify-between gap-1">
@@ -118,7 +118,7 @@ export function GroupView({ onOpenEntity }: { onOpenEntity: (id: EntityId) => vo
               type="button"
               disabled={!x.entityId}
               onClick={() => x.entityId && onOpenEntity(x.entityId)}
-              className="flex w-full items-start gap-2.5 rounded-none border border-hairline bg-paper-3 p-3 text-left transition-colors enabled:hover:border-hairline-strong"
+              className="flex w-full items-start gap-2.5 clay-sm p-3 text-left transition-colors enabled:hover:border-hairline-strong"
             >
               <span className="mt-0.5 grid grid-cols-1 size-6 shrink-0 place-items-center rounded-full bg-amber-soft text-amber-ink" aria-hidden>
                 <AlertTriangle className="size-3" />

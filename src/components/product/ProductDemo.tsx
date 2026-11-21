@@ -48,7 +48,7 @@ export function ProductDemo() {
       <div
         role="tablist"
         aria-label="Product views"
-        className="no-scrollbar flex overflow-x-auto"
+        className="clay-pressed no-scrollbar inline-flex max-w-full gap-[var(--space-2xs)] overflow-x-auto rounded-full p-[var(--space-2xs)]"
         onKeyDown={(e) => {
           const i = MOMENTS.findIndex((m) => m.id === moment);
           const d = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
@@ -61,7 +61,7 @@ export function ProductDemo() {
           }
         }}
       >
-        {MOMENTS.map((m, i) => {
+        {MOMENTS.map((m) => {
           const on = m.id === moment;
           return (
             <button
@@ -73,9 +73,9 @@ export function ProductDemo() {
               aria-controls={`${uid}-panel`}
               tabIndex={on ? 0 : -1}
               onClick={() => pick(m.id)}
-              className={`min-h-12 shrink-0 border-2 border-ink px-[var(--space-md)] text-sm font-medium transition-colors duration-[var(--dur-micro)] ease-[steps(1)] ${
-                i ? "-ml-[2px]" : ""
-              } ${on ? "bg-ink text-paper-3" : "bg-paper-3 hover:bg-paper-2"}`}
+              className={`min-h-11 shrink-0 rounded-full px-[var(--space-md)] text-sm font-extrabold transition-[box-shadow,background-color,color] duration-[var(--dur-short)] ${
+                on ? "bg-accent text-accent-ink shadow-clay-sm" : "text-muted hover:text-ink"
+              }`}
             >
               {m.label}
             </button>
@@ -87,7 +87,7 @@ export function ProductDemo() {
         id={`${uid}-panel`}
         role="tabpanel"
         aria-labelledby={`${uid}-${moment}`}
-        className="@container relative mt-[var(--space-sm)] flex h-[720px] flex-col overflow-hidden border-2 border-ink bg-app text-ink max-sm:h-[660px]"
+        className="clay @container relative mt-[var(--space-lg)] flex h-[720px] flex-col overflow-hidden bg-app text-ink max-sm:h-[660px]"
       >
         <div className="flex h-14 shrink-0 items-center justify-between border-b border-rule px-[var(--space-md)]">
           <GroupSwitcher />

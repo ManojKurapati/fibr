@@ -29,8 +29,8 @@ export function ExceptionsScreen() {
         {xs.map((x) => {
           const Icon = ICON[x.kind];
           return (
-            <li key={x.id} className="flex gap-3 rounded-none border border-hairline bg-paper-3 p-3">
-              <span className="grid grid-cols-1 size-8 shrink-0 place-items-center rounded-none bg-amber-soft text-amber-ink" aria-hidden>
+            <li key={x.id} className="flex gap-3 clay-sm p-3">
+              <span className="grid grid-cols-1 size-8 shrink-0 place-items-center rounded-xl bg-peach text-amber-ink" aria-hidden>
                 <Icon className="size-4" />
               </span>
               <div className="min-w-0">

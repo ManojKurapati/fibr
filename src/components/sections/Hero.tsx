@@ -40,16 +40,16 @@ export function Hero() {
   const rows = Array.from({ length: ROWS }, (_, i) => POOL[(POOL.length - offset + i) % POOL.length]!);
 
   return (
-    <section id="top" className="on-ink bg-ink text-paper-3">
+    <section id="top" className="text-ink">
       <div className="container flex min-h-[min(calc(92dvh-4rem),52rem)] flex-col justify-between gap-[var(--space-2xl)] py-[var(--space-lg)] max-sm:gap-[var(--space-xl)]">
-        <div>
-          <div className="flex items-center justify-between gap-[var(--space-md)] border-b-2 border-paper-3 pb-[var(--space-xs)] text-sm font-medium">
+        <div className="clay px-[var(--space-lg)] pb-[var(--space-sm)] pt-[var(--space-md)] max-sm:px-[var(--space-md)]">
+          <div className="flex items-center justify-between gap-[var(--space-md)] border-b border-rule pb-[var(--space-xs)] text-sm font-extrabold">
             <p className="min-w-0 truncate">Captured movements, demo group</p>
             <button
               type="button"
               onClick={() => setRunning((r) => !r)}
               aria-pressed={!running}
-              className="inline-flex min-h-11 shrink-0 items-center gap-[var(--space-xs)] whitespace-nowrap px-[var(--space-xs)] underline-offset-4 hover:underline"
+              className="clay-sm inline-flex min-h-11 shrink-0 items-center gap-[var(--space-xs)] whitespace-nowrap rounded-full px-[var(--space-md)] font-extrabold transition-transform active:translate-y-px"
             >
               {running ? <Pause className="size-4" aria-hidden /> : <Play className="size-4" aria-hidden />}
               <span className="max-sm:hidden">{running ? "Pause updates" : "Resume updates"}</span><span className="sm:hidden">{running ? "Pause" : "Resume"}</span>
@@ -58,7 +58,7 @@ export function Hero() {
           <table className="w-full table-fixed border-collapse text-left">
             <caption className="visually-hidden">The latest invoices, receipts and payments captured across the group</caption>
             <thead>
-              <tr className="text-sm text-paper-2">
+              <tr className="text-sm text-muted">
                 <th scope="col" className="w-[9rem] py-[var(--space-xs)] font-medium max-md:hidden">
                   Captured
                 </th>
@@ -81,15 +81,15 @@ export function Hero() {
             </thead>
             <tbody>
               {rows.map((m, i) => (
-                <tr key={`${m.id}-${offset}`} className={`border-t border-ink-rule ${i === 0 && offset > 0 ? "arrive" : ""} ${i >= 3 ? "max-sm:hidden" : ""}`}>
-                  <td className="num py-[var(--space-xs)] lg:py-[10px] text-paper-2 max-md:hidden">
+                <tr key={`${m.id}-${offset}`} className={`border-t border-rule ${i === 0 && offset > 0 ? "arrive" : ""} ${i >= 3 ? "max-sm:hidden" : ""}`}>
+                  <td className="num py-[var(--space-xs)] lg:py-[10px] text-muted max-md:hidden">
                     {dateShort(m.date)} {m.time}
                   </td>
                   <td className="truncate py-[var(--space-xs)] lg:py-[10px] pr-[var(--space-md)] font-medium">{companyName(m.entityId)}</td>
                   <td className="truncate py-[var(--space-xs)] lg:py-[10px] pr-[var(--space-md)] max-lg:hidden">{m.kind}</td>
-                  <td className="num truncate py-[var(--space-xs)] lg:py-[10px] pr-[var(--space-md)] text-paper-2 max-xl:hidden">{m.ref}</td>
+                  <td className="num truncate py-[var(--space-xs)] lg:py-[10px] pr-[var(--space-md)] text-muted max-xl:hidden">{m.ref}</td>
                   <td className="truncate py-[var(--space-xs)] lg:py-[10px] pr-[var(--space-md)] max-sm:hidden">{m.source}</td>
-                  <td className="num py-[var(--space-xs)] lg:py-[10px] text-right text-lead font-extrabold text-accent-2">
+                  <td className={`num py-[var(--space-xs)] lg:py-[10px] text-right text-lead font-extrabold ${SIGN[m.kind] ? "text-peach-ink" : "text-mint-ink"}`}>
                     {SIGN[m.kind]}
                     {amount(m.amount)}
                   </td>
@@ -102,7 +102,7 @@ export function Hero() {
         <div className="grid items-end gap-[var(--space-xl)] lg:grid-cols-12">
           <div className="lg:col-span-8">
             <h1 className="max-w-none">See every dirham move.</h1>
-            <p className="lead mt-[var(--space-md)] text-paper-2">Every transaction, invoice and receipt from every company, in one view.</p>
+            <p className="lead mt-[var(--space-md)] text-muted">Every transaction, invoice and receipt from every company, in one view.</p>
           </div>
           <div className="flex flex-wrap gap-[var(--space-sm)] lg:col-span-4 lg:justify-end">
             <Button primary />

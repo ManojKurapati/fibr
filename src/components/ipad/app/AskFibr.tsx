@@ -139,7 +139,7 @@ export function AskFibr({ autoPreset }: { autoPreset?: string } = {}) {
       <div ref={threadRef} className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 pb-3 @min-[54rem]:px-5">
         {empty ? (
           <div className="mx-auto flex h-full max-w-[640px] flex-col justify-center py-4">
-            <span className="mx-auto grid grid-cols-1 size-10 place-items-center rounded-none bg-ink text-canvas" aria-hidden>
+            <span className="mx-auto grid grid-cols-1 size-10 place-items-center rounded-xl bg-accent text-accent-ink" aria-hidden>
               <Sparkles className="size-4" />
             </span>
             <p className="mt-3 text-center font-display text-[22px] leading-tight tracking-[-0.02em] @min-[54rem]:text-[26px]">
@@ -152,7 +152,7 @@ export function AskFibr({ autoPreset }: { autoPreset?: string } = {}) {
                   key={p.id}
                   type="button"
                   onClick={() => askPreset(p)}
-                  className="rounded-none border border-hairline bg-paper-3 px-3.5 py-3 text-left text-[12px] font-medium leading-snug text-ink transition-[border-color,box-shadow,transform] hover:border-hairline-strong active:scale-[0.99]"
+                  className="clay-sm px-3.5 py-3 text-left text-[12px] font-medium leading-snug text-ink transition-[border-color,box-shadow,transform] hover:border-hairline-strong active:scale-[0.99]"
                 >
                   {p.question}
                 </button>
@@ -164,11 +164,11 @@ export function AskFibr({ autoPreset }: { autoPreset?: string } = {}) {
             {msgs.map((m) =>
               m.role === "user" ? (
                 <motion.div key={m.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2, ease }} className="flex justify-end">
-                  <p className="max-w-[80%] rounded-none bg-ink px-3.5 py-2 text-[12px] leading-snug text-canvas">{m.text}</p>
+                  <p className="max-w-[80%] rounded-xl bg-accent px-3.5 py-2 text-[12px] leading-snug text-accent-ink">{m.text}</p>
                 </motion.div>
               ) : (
                 <motion.div key={m.id} initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.22, ease }} className="flex gap-2">
-                  <span className="mt-0.5 grid grid-cols-1 size-6 shrink-0 place-items-center rounded-none bg-ink text-canvas" aria-hidden>
+                  <span className="mt-0.5 grid grid-cols-1 size-6 shrink-0 place-items-center rounded-xl bg-accent text-accent-ink" aria-hidden>
                     <Sparkles className="size-3" />
                   </span>
                   <div className="min-w-0 flex-1" aria-live="polite">
@@ -229,7 +229,7 @@ export function AskFibr({ autoPreset }: { autoPreset?: string } = {}) {
             type="submit"
             disabled={busy || !input.trim()}
             aria-label="Send question"
-            className="grid grid-cols-1 size-8 shrink-0 place-items-center rounded-full bg-ink text-canvas transition-opacity disabled:opacity-30"
+            className="grid grid-cols-1 size-8 shrink-0 place-items-center rounded-full bg-accent text-accent-ink transition-opacity disabled:opacity-30"
           >
             <ArrowUp className="size-4" aria-hidden />
           </button>
@@ -245,7 +245,7 @@ export function AskFibr({ autoPreset }: { autoPreset?: string } = {}) {
 
 function Thinking({ steps, step }: { steps: string[]; step: number }) {
   return (
-    <div className="rounded-none border border-hairline bg-paper-3 px-3.5 py-3">
+    <div className="clay-sm px-3.5 py-3">
       <ul className="space-y-1.5">
         {steps.map((s, i) => {
           const done = i < step;
@@ -270,7 +270,7 @@ function PresetAnswerCard({ answer }: { answer: PresetAnswer }) {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.25 }}
-      className="overflow-hidden rounded-none border border-hairline bg-paper-3"
+      className="overflow-hidden clay-sm"
     >
       <div className="grid grid-cols-1 gap-0 @min-[54rem]:grid-cols-[minmax(0,1fr)_1.05fr]">
         <div className="p-3.5">
@@ -315,7 +315,7 @@ function PresetAnswerCard({ answer }: { answer: PresetAnswer }) {
 function LiveAnswer({ text, streaming, demo }: { text: string; streaming: boolean; demo?: boolean }) {
   const blocks = text.split(/\n{2,}/).filter(Boolean);
   return (
-    <div className="rounded-none border border-hairline bg-paper-3 px-3.5 py-3 text-[12px] leading-relaxed text-ink">
+    <div className="clay-sm px-3.5 py-3 text-[12px] leading-relaxed text-ink">
       {demo ? <span className="mb-1.5 inline-block rounded-full bg-paper-2 px-2 py-0.5 text-[11px] font-extrabold text-ink-muted">Demo mode</span> : null}
       {blocks.length === 0 && streaming ? <span className="inline-block h-3.5 w-1.5 bg-ink-muted align-middle" /> : null}
       {blocks.map((b, i) => {

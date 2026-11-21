@@ -9,7 +9,7 @@ export function SummaryScreen() {
   return (
     <div className="h-full overflow-y-auto px-4 pb-5 pt-1 @min-[54rem]:px-5">
       <ViewHeader title="Company summary" subtitle="One template, one definition of every number, every company" />
-      <div className="overflow-x-auto rounded-none border border-hairline bg-paper-3">
+      <div className="overflow-x-auto clay-sm">
         <table className="w-full min-w-[620px] border-collapse text-[12px]">
           <thead>
             <tr className="border-b border-hairline bg-paper text-left text-[11px] font-extrabold text-ink-faint">

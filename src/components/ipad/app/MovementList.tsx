@@ -2,11 +2,11 @@ import type { Movement, MovementKind } from "@/lib/types";
 import { amount, dateShort } from "@/lib/format";
 
 const KIND_STYLE: Record<MovementKind, string> = {
-  "Sales invoice": "bg-ink text-canvas",
-  Receipt: "bg-emerald-soft text-emerald-ink",
+  "Sales invoice": "bg-sky text-sky-ink",
+  Receipt: "bg-mint text-mint-ink",
   "Purchase invoice": "bg-paper-2 text-ink",
   Payment: "bg-paper-2 text-ink-muted",
-  "Web order": "bg-paper-3 text-ink ring-1 ring-inset ring-hairline-strong",
+  "Web order": "bg-peach text-peach-ink",
 };
 
 /** Money in shows as positive, money out as negative. */

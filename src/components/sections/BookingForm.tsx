@@ -70,21 +70,21 @@ export function BookingForm() {
           ? { title: "Send the email to finish.", body: "Your email app has opened with your details filled in." }
           : { title: "This preview cannot send requests yet.", body: "Online booking is not connected on this preview site. Nothing was sent." };
     return (
-      <div role="status" className="flex min-h-[28rem] flex-col justify-center border-2 border-ink bg-paper-3 p-[var(--space-xl)]">
-        <span className="grid size-12 place-items-center bg-accent text-accent-ink" aria-hidden>
+      <div role="status" className="flex min-h-[28rem] flex-col justify-center rounded-[var(--radius-card)] bg-mint p-[var(--space-xl)] shadow-clay-pressed">
+        <span className="grid size-12 place-items-center rounded-full bg-accent text-accent-ink shadow-clay-sm" aria-hidden>
           <Check className="size-6" strokeWidth={3} />
         </span>
         <p className="mt-[var(--space-lg)] text-title font-extrabold tracking-[-0.02em]">{copy.title}</p>
-        <p className="mt-[var(--space-xs)] text-muted">{copy.body}</p>
+        <p className="mt-[var(--space-xs)] text-ink-2">{copy.body}</p>
       </div>
     );
   }
 
   const field =
-    "mt-[var(--space-xs)] block min-h-12 w-full rounded-none border-2 bg-paper-3 px-[var(--space-md)] py-[var(--space-sm)] text-ink outline-none placeholder:text-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus";
-  const border = (k: keyof BookingErrors) => (errors[k] ? "border-error" : "border-ink");
+    "clay-pressed mt-[var(--space-xs)] block min-h-12 w-full rounded-2xl border-[1.5px] px-[var(--space-md)] py-[var(--space-sm)] text-ink outline-none placeholder:text-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-focus";
+  const border = (k: keyof BookingErrors) => (errors[k] ? "border-error" : "border-muted");
   const choice =
-    "block cursor-pointer border-2 border-ink bg-paper-3 px-[var(--space-md)] py-[var(--space-sm)] text-center text-sm font-medium transition-colors duration-[var(--dur-micro)] ease-[steps(1)] peer-checked:bg-ink peer-checked:text-paper-3 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-focus hover:bg-paper-2";
+    "block cursor-pointer rounded-full bg-paper-3 px-[var(--space-md)] py-[var(--space-sm)] text-center text-sm font-extrabold shadow-clay-sm transition-[box-shadow,background-color] duration-[var(--dur-short)] peer-checked:bg-accent peer-checked:text-accent-ink peer-checked:shadow-clay-pressed peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-focus";
 
   return (
     <form noValidate onSubmit={onSubmit} className="relative" aria-describedby={`${uid}-note`}>
@@ -188,7 +188,7 @@ function Field({ id, label, error, children }: { id: string; label: string; erro
       <label htmlFor={id} className="text-sm font-medium">
         {label}
       </label>
-      {children}
+      <div className="relative">{children}</div>
       {error ? (
         <p id={`${id}-err`} className="mt-[var(--space-xs)] text-sm font-medium text-error">
           {error}

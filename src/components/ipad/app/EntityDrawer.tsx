@@ -62,7 +62,7 @@ function DrawerPanel({ entityId, onClose }: { entityId: EntityId; onClose: () =>
         <div className="shrink-0 border-b border-hairline px-4 pb-3 pt-3.5">
           <div className="flex items-start justify-between gap-3">
             <div className="flex min-w-0 items-start gap-2.5">
-              <span className="mt-0.5 grid grid-cols-1 size-8 shrink-0 place-items-center rounded-none bg-ink text-canvas" aria-hidden>
+              <span className="mt-0.5 grid grid-cols-1 size-8 shrink-0 place-items-center rounded-xl bg-accent text-accent-ink" aria-hidden>
                 <Building2 className="size-4" />
               </span>
               <div className="min-w-0">
@@ -82,12 +82,12 @@ function DrawerPanel({ entityId, onClose }: { entityId: EntityId; onClose: () =>
           </div>
           <div className="mt-2.5 flex flex-wrap items-center gap-1.5">
             {s.auditReasons.map((r) => (
-              <span key={r} className="rounded-full bg-ink px-2 py-0.5 text-[11px] font-extrabold text-canvas">Audit: {r}</span>
+              <span key={r} className="rounded-full bg-accent px-2 py-0.5 text-[11px] font-extrabold text-accent-ink">Audit: {r}</span>
             ))}
             <SourceBadge sources={e.ledgers} />
           </div>
           {/* Segmented control */}
-          <div role="tablist" aria-label="Company view" className="mt-3 grid grid-cols-3 rounded-none bg-paper-2 p-0.5">
+          <div role="tablist" aria-label="Company view" className="mt-3 grid grid-cols-3 rounded-xl bg-paper-2 p-0.5">
             {(["pnl", "cash", "movements"] as const).map((t) => (
               <button
                 key={t}
@@ -95,10 +95,10 @@ function DrawerPanel({ entityId, onClose }: { entityId: EntityId; onClose: () =>
                 role="tab"
                 aria-selected={tab === t}
                 onClick={() => setTab(t)}
-                className="relative h-7 rounded-none text-[12px] font-extrabold"
+                className="relative h-7 rounded-xl text-[12px] font-extrabold"
               >
                 {tab === t ? (
-                  <motion.span layoutId={`seg-${titleId}`} className="absolute inset-0 rounded-none bg-paper-3" transition={{ duration: 0.22, ease }} />
+                  <motion.span layoutId={`seg-${titleId}`} className="absolute inset-0 rounded-xl bg-paper-3" transition={{ duration: 0.22, ease }} />
                 ) : null}
                 <span className={`relative ${tab === t ? "text-ink" : "text-ink-muted"}`}>{t === "pnl" ? "P&L" : t === "cash" ? "Cash" : "Movements"}</span>
               </button>
@@ -153,7 +153,7 @@ function PnlPanel({ id }: { id: EntityId }) {
         <Row label="Finance cost" value={-e.pnl.financeCost} />
         <Row label="Net profit" value={s.netProfit} strong note={pct(s.netMargin)} tone={s.netMargin < 0 ? "amber" : undefined} />
       </div>
-      <div className="mt-4 rounded-none border border-hairline bg-paper-3 p-3">
+      <div className="mt-4 clay-sm p-3">
         <div className="flex items-baseline justify-between">
           <p className="text-[12px] font-extrabold">Monthly revenue</p>
           <p className="num text-[11px] text-ink-faint">FY2025 {compact(e.fy2025Revenue, 1)}</p>
@@ -169,7 +169,7 @@ function CashPanel({ id }: { id: EntityId }) {
   const s = summarise(e);
   const r = e.receivables;
   const aging = [
-    { label: "0 to 30", value: r.current, color: "bg-ink" },
+    { label: "0 to 30", value: r.current, color: "bg-accent" },
     { label: "31 to 60", value: r.d31to60, color: "bg-ink-2" },
     { label: "61 to 90", value: r.d61to90, color: "bg-muted" },
     { label: "90+", value: s.over90, color: "bg-amber" },
@@ -178,7 +178,7 @@ function CashPanel({ id }: { id: EntityId }) {
   const xs = exceptions().filter((x) => x.entityId === id);
   return (
     <div className="space-y-4">
-      <div className="flex items-end justify-between rounded-none border border-hairline bg-paper-3 p-3">
+      <div className="flex items-end justify-between clay-sm p-3">
         <div>
           <p className="text-[11px] font-medium text-ink-muted">Cash today</p>
           <p className="mt-0.5 flex items-baseline gap-1">
@@ -210,7 +210,7 @@ function CashPanel({ id }: { id: EntityId }) {
           <p className="text-[12px] font-extrabold">Receivables ageing</p>
           <p className="num text-[11px] text-ink-muted">{amount(s.receivablesTotal)}</p>
         </div>
-        <div className="mt-2 flex h-2.5 overflow-hidden bg-paper-2" role="img" aria-label="Receivables ageing">
+        <div className="mt-2 flex h-2.5 overflow-hidden rounded-full bg-paper-2 shadow-clay-pressed" role="img" aria-label="Receivables ageing">
           {aging.map((a) => (
             <span key={a.label} className={a.color} style={{ width: `${(a.value / s.receivablesTotal) * 100}%` }} />
           ))}
@@ -237,11 +237,11 @@ function CashPanel({ id }: { id: EntityId }) {
       </div>
 
       <div className="grid grid-cols-2 gap-2">
-        <div className="rounded-none border border-hairline bg-paper-3 p-2.5">
+        <div className="clay-sm p-2.5">
           <p className="text-[11px] text-ink-muted">Payables</p>
           <p className="num text-[13px] font-extrabold">{compact(e.payables, 2)}</p>
         </div>
-        <div className="rounded-none border border-hairline bg-paper-3 p-2.5">
+        <div className="clay-sm p-2.5">
           <p className="text-[11px] text-ink-muted">VAT {e.vat.period}</p>
           <p className="num text-[13px] font-extrabold">
             {s.vatNet >= 0 ? "" : "Refund "}
@@ -266,8 +266,8 @@ function CashPanel({ id }: { id: EntityId }) {
                     {compact(f.utilised, 1)} / {compact(f.limit, 1)}
                   </span>
                 </div>
-                <div className="mt-1 h-1.5 overflow-hidden bg-paper-2">
-                  <span className={`block h-full ${u >= 0.85 ? "bg-amber" : "bg-ink"}`} style={{ width: `${u * 100}%` }} />
+                <div className="mt-1 h-1.5 overflow-hidden rounded-full bg-paper-2 shadow-clay-pressed">
+                  <span className={`block h-full rounded-full ${u >= 0.85 ? "bg-amber" : "bg-accent"}`} style={{ width: `${u * 100}%` }} />
                 </div>
               </div>
             );
@@ -278,7 +278,7 @@ function CashPanel({ id }: { id: EntityId }) {
       {xs.length ? (
         <div className="space-y-1.5">
           {xs.map((x) => (
-            <div key={x.id} className="flex gap-2 rounded-none bg-amber-soft p-2.5">
+            <div key={x.id} className="flex gap-2 rounded-xl bg-peach p-2.5">
               <AlertTriangle className="mt-0.5 size-3.5 shrink-0 text-amber-ink" aria-hidden />
               <div>
                 <p className="text-[12px] font-extrabold text-ink">{x.title}</p>
@@ -305,7 +305,7 @@ function MovementsPanel({ id }: { id: EntityId }) {
   ];
   return (
     <div className="space-y-4">
-      <div className="rounded-none border border-hairline bg-paper-3 p-3">
+      <div className="clay-sm p-3">
         <div className="flex items-baseline justify-between">
           <p className="text-[11px] font-medium text-ink-muted">Movements captured, {PNL_PERIOD}</p>
           <p className="num text-[15px] font-extrabold tracking-[-0.02em]">{amount(c.total)}</p>

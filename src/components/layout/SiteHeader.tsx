@@ -10,15 +10,16 @@ const QUESTION = "Who owes us more than 90 days?";
 /** Search-led bar: the wordmark, a visible Ask fibr pill that runs a real question, and the one action. */
 export function SiteHeader() {
   return (
-    <header className="sticky top-0 z-[var(--z-sticky-nav)] border-b-2 border-ink bg-paper">
-      <div className="container flex h-16 items-center justify-between gap-[var(--space-lg)]">
+    <header className="sticky top-0 z-[var(--z-sticky-nav)] pt-[var(--space-sm)]">
+      <div className="container">
+        <div className="clay flex h-16 items-center justify-between gap-[var(--space-lg)] rounded-full pl-[var(--space-lg)] pr-[var(--space-xs)]">
         <a href="#top" aria-label="fibr, back to the top" className="shrink-0">
           <Wordmark />
         </a>
         <button
           type="button"
           onClick={() => openDemo({ moment: "ask", preset: "ar-90" })}
-          className="hidden h-10 min-w-0 max-w-[30rem] flex-1 items-center gap-[var(--space-sm)] border-2 border-ink bg-paper-3 px-[var(--space-md)] text-left text-sm font-medium transition-colors duration-[var(--dur-micro)] ease-[steps(1)] hover:bg-paper-2 lg:flex"
+          className="clay-pressed hidden h-11 min-w-0 max-w-[30rem] flex-1 items-center gap-[var(--space-sm)] rounded-full px-[var(--space-md)] text-left text-sm font-medium lg:flex"
         >
           <Search className="size-4 shrink-0" aria-hidden />
           <span className="truncate text-muted">Ask fibr:</span>
@@ -36,6 +37,7 @@ export function SiteHeader() {
           </a>
         </nav>
         <Button className="max-sm:hidden" />
+        </div>
       </div>
     </header>
   );

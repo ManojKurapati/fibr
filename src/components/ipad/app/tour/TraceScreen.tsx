@@ -30,7 +30,7 @@ export function TraceScreen() {
       <ViewHeader title="Trace to source" subtitle="Receivables over 90 days, from group total to invoice" />
 
       <nav aria-label="Trace path" className="mb-3 flex flex-wrap items-center gap-1 text-[12px]">
-        <span className="rounded-full bg-ink px-2.5 py-1 font-extrabold text-canvas">
+        <span className="rounded-full bg-accent px-2.5 py-1 font-extrabold text-accent-ink">
           Group <span className="num">{compact(t.over90, 2)}</span>
         </span>
         <ChevronRight className="size-3 text-ink-faint" aria-hidden />
@@ -48,7 +48,7 @@ export function TraceScreen() {
       </nav>
 
       <div className="grid grid-cols-1 gap-2.5 @min-[54rem]:grid-cols-3">
-        <div className="rounded-none border border-hairline bg-paper-3 p-3">
+        <div className="clay-sm p-3">
           <p className="text-[11px] font-extrabold text-ink-faint">1. Company</p>
           <ul className="mt-1.5">
             {companies.map((c) => (
@@ -60,7 +60,7 @@ export function TraceScreen() {
                     setDn(0);
                   }}
                   aria-pressed={co === c.entity.id}
-                  className={`flex w-full items-baseline justify-between gap-2 rounded-none px-2 py-1.5 text-left text-[12px] ${co === c.entity.id ? "bg-ink text-canvas" : "hover:bg-paper-2"}`}
+                  className={`flex w-full items-baseline justify-between gap-2 rounded-xl px-2 py-1.5 text-left text-[12px] ${co === c.entity.id ? "bg-accent text-accent-ink" : "hover:bg-paper-2"}`}
                 >
                   <span className="truncate">{c.entity.name}</span>
                   <span className="num shrink-0">{compact(c.over90, 2)}</span>
@@ -70,7 +70,7 @@ export function TraceScreen() {
           </ul>
         </div>
 
-        <div className="rounded-none border border-hairline bg-paper-3 p-3">
+        <div className="clay-sm p-3">
           <p className="text-[11px] font-extrabold text-ink-faint">2. Customer</p>
           <ul className="mt-1.5">
             {coDebtors.map((x, i) => (
@@ -79,7 +79,7 @@ export function TraceScreen() {
                   type="button"
                   onClick={() => setDn(i)}
                   aria-pressed={dn === i}
-                  className={`w-full rounded-none px-2 py-1.5 text-left text-[12px] ${dn === i ? "bg-ink text-canvas" : "hover:bg-paper-2"}`}
+                  className={`w-full rounded-xl px-2 py-1.5 text-left text-[12px] ${dn === i ? "bg-accent text-accent-ink" : "hover:bg-paper-2"}`}
                 >
                   <span className="flex items-baseline justify-between gap-2">
                     <span className="truncate">{x.name}</span>
@@ -92,7 +92,7 @@ export function TraceScreen() {
           </ul>
         </div>
 
-        <div className="rounded-none border border-hairline bg-paper-3 p-3">
+        <div className="clay-sm p-3">
           <p className="text-[11px] font-extrabold text-ink-faint">3. Invoices</p>
           <div className="mt-1.5">
             <MovementList items={invoices} overdue />
@@ -104,7 +104,7 @@ export function TraceScreen() {
         </div>
       </div>
       {invoices[0] && d ? (
-        <div className="mt-2.5 grid grid-cols-1 gap-x-6 gap-y-2 rounded-none border border-hairline bg-paper-3 p-3 text-[11px] @min-[54rem]:grid-cols-[auto_1fr_1fr_1fr_1fr]">
+        <div className="mt-2.5 grid grid-cols-1 gap-x-6 gap-y-2 clay-sm p-3 text-[11px] @min-[54rem]:grid-cols-[auto_1fr_1fr_1fr_1fr]">
           <p className="text-[11px] font-extrabold text-ink-faint @min-[54rem]:row-span-2 @min-[54rem]:self-center">
             4. Source
             <br />

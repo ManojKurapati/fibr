@@ -9,7 +9,7 @@ const CAPTURES: Record<(typeof SOURCES)[number], string> = {
   Shopify: "Web orders",
 };
 
-/** Sources as a board of square cells joined edge to edge, with the trust facts beside them. */
+/** Sources as clay tiles, with the security facts in one clay card beside them. */
 export function Sources() {
   return (
     <section id="sources" aria-labelledby="sources-head" className="py-[var(--section-gap)]">
@@ -20,14 +20,14 @@ export function Sources() {
           </h2>
           <p className="lead text-muted lg:col-span-5">fibr reads every company&apos;s books. It never writes or posts.</p>
         </div>
-        <div className="mt-[var(--space-2xl)] grid gap-[var(--space-2xl)] lg:grid-cols-12">
-          <ul className="grid grid-cols-1 border-l-2 border-t-2 border-ink sm:grid-cols-2 lg:col-span-8">
+        <div className="mt-[var(--space-2xl)] grid gap-[var(--gap-columns)] lg:grid-cols-12">
+          <ul className="grid grid-cols-1 gap-[var(--space-lg)] sm:grid-cols-2 lg:col-span-8">
             {SOURCES.map((s, i) => {
               const n = ENTITIES.filter((e) => e.ledgers.includes(s)).length;
               return (
                 <li
                   key={s}
-                  className={`flex min-h-[10rem] min-w-0 flex-col justify-between border-b-2 border-r-2 border-ink bg-paper-3 p-[var(--space-lg)] ${i === SOURCES.length - 1 ? "sm:col-span-2" : ""}`}
+                  className={`clay flex min-h-[10rem] min-w-0 flex-col justify-between p-[var(--space-lg)] ${i === SOURCES.length - 1 ? "sm:col-span-2" : ""}`}
                 >
                   <span className="text-title font-extrabold leading-tight tracking-[-0.02em]">{s}</span>
                   <span className="mt-[var(--space-lg)] text-muted">
@@ -40,11 +40,11 @@ export function Sources() {
               );
             })}
           </ul>
-          <dl className="border-t-2 border-ink lg:col-span-4">
-            {TRUST.map((t) => (
-              <div key={t.title} className="border-b border-rule py-[var(--space-lg)]">
+          <dl className="clay h-fit bg-sky px-[var(--space-lg)] py-[var(--space-xs)] lg:col-span-4">
+            {TRUST.map((t, i) => (
+              <div key={t.title} className={`py-[var(--space-lg)] ${i ? "border-t border-ink-rule" : ""}`}>
                 <dt className="text-title font-extrabold tracking-[-0.02em]">{t.title}</dt>
-                <dd className="m-0 mt-[var(--space-2xs)] text-muted">{t.line}</dd>
+                <dd className="m-0 mt-[var(--space-2xs)] text-ink-2">{t.line}</dd>
               </div>
             ))}
           </dl>

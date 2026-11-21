@@ -5,7 +5,7 @@ import { GROUP_NAME } from "@/data/names";
 export function GroupSwitcher() {
   return (
     <span className="flex min-w-0 items-center gap-2.5 text-left">
-      <span className="grid grid-cols-1 size-7 shrink-0 place-items-center rounded-none bg-ink font-display text-[17px] leading-none text-canvas">
+      <span className="grid grid-cols-1 size-7 shrink-0 place-items-center rounded-xl bg-accent font-display text-[17px] leading-none text-accent-ink">
         f
       </span>
       <span className="min-w-0">

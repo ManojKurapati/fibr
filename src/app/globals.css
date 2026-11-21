@@ -1,24 +1,24 @@
-/* Hallmark · shape: Workbench (draw c39e63 dealt Stat-Led; swapped, no user-given figures) · genre: modern-minimal · theme: Wayfind (deal 1/3, seed financial-visibility-uae-holding-82ba·2e93a16c·2026-11-21·r0) · redesign: full
- * hero: Poster · nav: search-led bar · footer: colophon block · imagery: the product, built · signature: the movements board, every invoice and receipt arriving row by row · wayfind: platform
- * axes: light/mono/cool · posture: committed · contrast: pass · fold: pass · v2.0.0 */
-/* Hallmark · pre-emit critique: P4 H5 E4 S5 R4 V4 · weakest: P, the argument (see it now, not at month-end) rests on the before and after table; set it as the first section after the board */
-/* Hallmark · waive 39b · the 186px buttons are the demo's company tiles · app UI inside the product frame, each tile one tap target */
-/* Hallmark · dropped #faq, #pilot, #pipeline, #roles, #tour, #problem, #pricing, the mobile nav sheet and their handlers · the user asked to cut about 60% of the words; their facts fold into the before and after table, the source rows, the trust rows, the close and the product tabs, and the role list stays in the form */
-/* Hallmark · dropped the tablet bezel, status bar and battery figures (07:42, 100%) · gate 47a: no hand-drawn device chrome; the product sits in a 2px ink frame */
+/* Hallmark · shape: Workbench · genre: modern-minimal · theme: custom claymorphism (by request, over Wayfind) · redesign: restyle
+ * hero: Poster · nav: search-led bar · footer: colophon block · imagery: the product, built · signature: the movements board, every invoice and receipt arriving row by row
+ * axes: light/rounded-sans/cool · posture: full-palette (paper, sky, mint, peach, ink) · contrast: pass · fold: pass · v2.0.0 */
+/* Hallmark · pre-emit critique: P4 H4 E4 S4 R3 V4 · weakest: R, clay invites puffiness everywhere; one recipe at two sizes and a pressed state, nothing nested more than one level */
+/* Hallmark · waive 39b · the tall buttons are the demo's company tiles · app UI inside the product frame, each tile one tap target */
 /* Hallmark · waive 72 · the clipped text is the header Ask pill and the demo tile names, both text-overflow: ellipsis · truncation is deliberate at these widths; the full name shows in the drawer */
+/* Hallmark · waive 29 · claymorphism is a stack of offset light and dark shadows plus inner highlights · the user asked for claymorphism across the portal; no glow, no blur behind glass, all on a light paper */
+/* Hallmark · dropped #faq, #pilot, #pipeline, #roles, #tour, #problem, #pricing, the mobile nav sheet and their handlers · cut in the earlier redesign at the user's request */
 @import "tailwindcss";
 @import "./tokens.css";
 @import "./base.css" layer(base);
 
 /*
- * The demo app predates the theme and names its colours by role. Each role points at a
- * Wayfind token so the whole page, product included, runs on one palette.
+ * The demo app names its colours by role. Each role points at a clay token so the page and the
+ * product run on one palette: mint for cash and what is fine, peach for what is flagged.
  */
 @theme inline {
   --color-canvas: var(--color-paper);
   --color-surface: var(--color-paper-3);
   --color-hairline: var(--color-rule);
-  --color-hairline-strong: var(--color-ink);
+  --color-hairline-strong: var(--color-ink-rule);
   --color-obsidian: var(--color-ink);
   --color-obsidian-raised: var(--color-ink-2);
   --color-obsidian-hairline: var(--color-ink-rule);
@@ -26,25 +26,25 @@
   --color-ink-faint: var(--color-muted);
   --color-ink-inverse: var(--color-paper-3);
   --color-ink-inverse-muted: var(--color-paper-2);
-  --color-emerald: var(--color-accent);
-  --color-emerald-ink: var(--color-accent);
-  --color-emerald-soft: var(--color-accent-soft);
-  --color-amber: var(--color-accent-2);
-  --color-amber-ink: var(--color-ink);
-  --color-amber-soft: var(--color-accent-2);
+  --color-emerald: var(--color-mint-ink);
+  --color-emerald-ink: var(--color-mint-ink);
+  --color-emerald-soft: var(--color-mint);
+  --color-amber: var(--color-peach);
+  --color-amber-ink: var(--color-peach-ink);
+  --color-amber-soft: var(--color-peach);
   --color-app: var(--color-paper);
   --color-app-sidebar: var(--color-paper-2);
+  --color-accent-soft: var(--color-sky);
   --font-sans: var(--font-body);
-  --font-mono: var(--font-body);
+  --font-mono: var(--font-outlier);
+  --shadow-clay: var(--shadow-card);
 }
 
 @theme static {
-  --color-accent-soft: oklch(93% 0.035 264);
-  --color-scrim: oklch(16% 0.014 262 / 0.28);
+  --color-scrim: oklch(25% 0.035 262 / 0.22);
 }
 
 body {
-  font-variant-numeric: tabular-nums;
   font-size: 1.0625rem;
   line-height: 1.6;
 }
@@ -52,24 +52,18 @@ body {
 h1,
 h2,
 h3 {
-  line-height: 0.98;
+  line-height: 1.02;
 }
 
 h1 {
-  font-size: min(var(--text-display), 4.75rem);
+  font-size: min(var(--text-display), 5rem);
 }
 
-@layer base {
-  small,
-  th,
-  figcaption {
-    font-weight: 500;
-  }
-}
-
-/* Every figure, date and timestamp. */
+/* Every figure, date and timestamp: the mono outlier, tabular. */
 @utility num {
+  font-family: var(--font-outlier);
   font-variant-numeric: tabular-nums lining-nums slashed-zero;
+  letter-spacing: -0.01em;
 }
 
 @utility no-scrollbar {
@@ -79,70 +73,88 @@ h1 {
   }
 }
 
-/* Buttons: Wayfind controls, square, 2px rule, departure-board stiff. In a layer so utilities win. */
-@layer components {
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-xs);
-  min-height: 48px;
-  padding: 0 var(--space-lg);
-  border: var(--rule-bar) solid var(--color-ink);
-  background: transparent;
-  color: var(--color-ink);
-  font: 800 var(--text-sm) / 1 var(--font-body);
-  white-space: nowrap;
-  text-decoration: none;
-  cursor: pointer;
-  transition: background-color var(--dur-micro) steps(1), color var(--dur-micro) steps(1);
+/*
+ * Clay: one recipe at two sizes, plus a pressed state for what is selected or sunk.
+ * A clay surface never sits inside another clay surface of the same size.
+ */
+@utility clay {
+  border-radius: var(--radius-card);
+  background: var(--color-paper-3);
+  box-shadow: var(--shadow-card);
 }
-.btn:hover {
+@utility clay-sm {
+  border-radius: var(--radius-inner);
+  background: var(--color-paper-3);
+  box-shadow: var(--shadow-clay-sm);
+}
+@utility clay-pressed {
+  border-radius: var(--radius-inner);
   background: var(--color-paper-2);
-}
-.btn:active {
-  transform: translateY(1px);
-}
-.btn:focus-visible {
-  outline: 2px solid var(--color-focus);
-  outline-offset: 2px;
-}
-.btn:disabled,
-.btn[aria-disabled="true"] {
-  opacity: 0.55;
-  cursor: not-allowed;
-  transform: none;
-}
-.btn[aria-busy="true"] {
-  cursor: progress;
-}
-.btn--primary {
-  background: var(--color-accent);
-  border-color: var(--color-accent);
-  color: var(--color-accent-ink);
-}
-.btn--primary:hover {
-  background: var(--color-ink);
-  border-color: var(--color-ink);
-}
-.on-ink .btn {
-  border-color: var(--color-paper-3);
-  color: var(--color-paper-3);
-}
-.on-ink .btn:hover {
-  background: var(--color-ink-2);
-}
-.on-ink .btn--primary {
-  border-color: var(--color-accent);
-  color: var(--color-accent-ink);
-}
-@media (max-width: 30rem) {
-  .btn {
-    padding: 0 var(--space-md);
-    font-size: var(--text-xs);
-  }
+  box-shadow: var(--shadow-clay-pressed);
 }
 
+/* Buttons: clay pills; they sink when pressed. In a layer so utilities win. */
+@layer components {
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-xs);
+    min-height: 50px;
+    padding: 0 var(--space-lg);
+    border-radius: var(--radius-pill);
+    background: var(--color-paper-3);
+    color: var(--color-ink);
+    box-shadow: var(--shadow-clay-sm);
+    font: 800 var(--text-md) / 1 var(--font-body);
+    white-space: nowrap;
+    text-decoration: none;
+    cursor: pointer;
+    transition: box-shadow var(--dur-short) var(--ease-out), transform var(--dur-micro) var(--ease-out), background-color var(--dur-short) var(--ease-out);
+  }
+  .btn:hover {
+    transform: translateY(-1px);
+  }
+  .btn:active {
+    transform: translateY(1px);
+    box-shadow: var(--shadow-clay-pressed);
+  }
+  .btn:focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 3px;
+  }
+  .btn:disabled,
+  .btn[aria-disabled="true"] {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+  }
+  .btn[aria-busy="true"] {
+    cursor: progress;
+  }
+  .btn--primary {
+    background: var(--color-accent);
+    color: var(--color-accent-ink);
+    box-shadow: var(--shadow-clay-primary);
+  }
+  .btn--primary:hover {
+    background: var(--color-ink-2);
+  }
+  @media (max-width: 30rem) {
+    .btn {
+      padding: 0 var(--space-md);
+      font-size: var(--text-sm);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .btn {
+      transition: background-color var(--dur-short) linear;
+    }
+    .btn:hover,
+    .btn:active {
+      transform: none;
+    }
+  }
 }
 
 /* Recharts: tabular ticks, no focus box on the SVG surface. */
@@ -156,17 +168,17 @@ h1 {
   outline: none;
 }
 
-/* The board's new row: one blink, in steps, never a loop. */
+/* The board's new row: one soft highlight, never a loop. */
 @keyframes arrive {
   0% {
-    background: var(--color-ink-2);
+    background: var(--color-sky);
   }
   100% {
     background: transparent;
   }
 }
 .arrive {
-  animation: arrive 900ms steps(3) 1;
+  animation: arrive 1200ms var(--ease-out) 1;
 }
 @media (prefers-reduced-motion: reduce) {
   .arrive {

@@ -35,8 +35,10 @@ function palette() {
     muted: tokenColour("--color-muted"),
     rule: tokenColour("--color-rule"),
     paper2: tokenColour("--color-paper-2"),
-    amber: tokenColour("--color-accent-2"),
-    cobalt: tokenColour("--color-accent"),
+    amber: tokenColour("--color-peach-ink"),
+    peach: tokenColour("--color-peach"),
+    cobalt: tokenColour("--color-mint-ink"),
+    accent: tokenColour("--color-accent"),
   };
 }
 type Palette = ReturnType<typeof palette>;
@@ -49,12 +51,12 @@ export interface BarDatum {
 }
 
 const colorFor = (c: Palette, h: BarDatum["highlight"]) =>
-  h === "amber" ? c.amber : h === "emerald" ? c.cobalt : h === "muted" ? c.rule : c.ink;
+  h === "amber" ? c.amber : h === "emerald" ? c.cobalt : h === "muted" ? c.rule : c.accent;
 
 function ChartTooltip({ active, payload, label }: { active?: boolean; payload?: ReadonlyArray<{ value?: unknown; name?: unknown; color?: string }>; label?: unknown }) {
   if (!active || !payload?.length) return null;
   return (
-    <div className="rounded-lg border border-hairline bg-paper-3 px-2.5 py-1.5 text-[11px]">
+    <div className="clay-sm px-2.5 py-1.5 text-[11px]">
       <p className="mb-0.5 font-extrabold text-ink">{String(label ?? "")}</p>
       {payload.map((p, i) =>
         typeof p.value === "number" && p.value !== 0 ? (
@@ -130,7 +132,7 @@ export function AnswerBars({
             />
           ) : null}
           <Tooltip cursor={{ fill: c.paper2 }} content={<ChartTooltip />} />
-          <Bar dataKey="value" name="AED" radius={horizontalBars ? [0, 4, 4, 0] : [4, 4, 0, 0]} isAnimationActive animationDuration={500}>
+          <Bar dataKey="value" name="AED" radius={horizontalBars ? [0, 8, 8, 0] : [8, 8, 0, 0]} isAnimationActive animationDuration={500}>
             {data.map((d) => (
               <Cell key={d.name} fill={colorFor(c, d.highlight)} />
             ))}
@@ -203,7 +205,7 @@ export function MaturityLadder({
           {weeks
             .filter((w) => w.flagged)
             .map((w) => (
-              <ReferenceArea key={w.week} yAxisId="m" x1={w.label} x2={w.label} fill={c.amber} fillOpacity={0.35} />
+              <ReferenceArea key={w.week} yAxisId="m" x1={w.label} x2={w.label} fill={c.peach} fillOpacity={0.7} />
             ))}
           {selectedLabel ? <ReferenceArea yAxisId="m" x1={selectedLabel} x2={selectedLabel} fill="none" stroke={c.ink} strokeWidth={2} /> : null}
           <XAxis dataKey="label" tickLine={false} axisLine={false} tick={tick} interval={width < 760 ? 1 : 0} />
@@ -218,7 +220,7 @@ export function MaturityLadder({
               name={t}
               stackId="m"
               fill={tokenColour(TYPE_TOKEN[t])}
-              radius={i === FACILITY_TYPES.length - 1 ? [3, 3, 0, 0] : 0}
+              radius={i === FACILITY_TYPES.length - 1 ? [6, 6, 0, 0] : 0}
               animationDuration={600}
             >
             </Bar>

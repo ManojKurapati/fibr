@@ -1,8 +1,14 @@
 import type { Metadata, Viewport } from "next";
-import { Chivo_Mono } from "next/font/google";
+import { Chivo_Mono, Nunito } from "next/font/google";
 import "./globals.css";
 
-/* Wayfind: Chivo Mono sets the whole page. The CSS var it writes feeds --font-display in tokens.css. */
+/* Clay: Nunito (rounded) for words, Chivo Mono for figures, dates and references. */
+const nunito = Nunito({
+  subsets: ["latin"],
+  variable: "--font-nunito",
+  display: "swap",
+});
+
 const chivo = Chivo_Mono({
   subsets: ["latin"],
   variable: "--font-chivo",
@@ -30,7 +36,7 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={chivo.variable}>
+    <html lang="en" className={`${nunito.variable} ${chivo.variable}`}>
       <body>{children}</body>
     </html>
   );
